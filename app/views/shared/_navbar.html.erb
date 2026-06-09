@@ -1,0 +1,76 @@
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" data-controller="mobile-menu">
+    <div class="flex h-16 items-center justify-between">
+      <%= link_to root_path, class: "text-xl font-extrabold tracking-tight text-brand-900" do %>
+        AcquireTMT
+      <% end %>
+
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-700">
+        <%= link_to "Sell", sell_path, class: "hover:text-brand-500" %>
+        <%= link_to "Buy", buyers_path, class: "hover:text-brand-500" %>
+        <%= link_to "Tools", tools_find_buyers_path, class: "hover:text-brand-500" %>
+        <%= link_to "Industries", industry_path("saas"), class: "hover:text-brand-500" %>
+        <%= link_to "Insights", insights_path, class: "hover:text-brand-500" %>
+        <%= link_to "About", about_path, class: "hover:text-brand-500" %>
+      </nav>
+
+      <%= link_to "Find Buyers", tools_find_buyers_path,
+        class: "hidden lg:inline-flex rounded-full bg-brand-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800" %>
+
+      <button type="button"
+        class="lg:hidden rounded-xl border border-slate-300 p-2 text-slate-700"
+        data-action="mobile-menu#toggle"
+        aria-label="Toggle menu">
+        <%= lucide_icon "menu", class: "h-5 w-5" %>
+      </button>
+    </div>
+
+    <div class="hidden border-t border-slate-200 py-4 lg:hidden" data-mobile-menu-target="menu">
+  <nav class="flex flex-col gap-2 text-sm font-semibold text-slate-700">
+
+    <%= link_to sell_path,
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "briefcase-business", class: "h-5 w-5 text-brand-500" %>
+      <span>Sell</span>
+    <% end %>
+
+    <%= link_to buyers_path,
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "users", class: "h-5 w-5 text-brand-500" %>
+      <span>Buy</span>
+    <% end %>
+
+    <%= link_to tools_find_buyers_path,
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "search", class: "h-5 w-5 text-brand-500" %>
+      <span>Tools</span>
+    <% end %>
+
+    <%= link_to industry_path("saas"),
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "building-2", class: "h-5 w-5 text-brand-500" %>
+      <span>Industries</span>
+    <% end %>
+
+    <%= link_to insights_path,
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "book-open", class: "h-5 w-5 text-brand-500" %>
+      <span>Insights</span>
+    <% end %>
+
+    <%= link_to about_path,
+      class: "flex items-center gap-3 rounded-xl px-3 py-3 hover:bg-slate-50" do %>
+      <%= lucide_icon "info", class: "h-5 w-5 text-brand-500" %>
+      <span>About</span>
+    <% end %>
+
+    <%= link_to tools_find_buyers_path,
+      class: "mt-3 flex items-center justify-center gap-2 rounded-full bg-brand-900 px-5 py-3 font-bold text-white" do %>
+      <%= lucide_icon "search", class: "h-5 w-5" %>
+      <span>Find Buyers</span>
+    <% end %>
+
+  </nav>
+</div>
+  </div>
+</header>

@@ -1,0 +1,58 @@
+<footer class="bg-brand-900 text-white">
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-6">
+      <div class="lg:col-span-2">
+        <h2 class="text-xl font-extrabold">AcquireTMT</h2>
+        <p class="mt-4 max-w-sm text-sm leading-6 text-slate-300">
+          AI-assisted M&A advisory for technology, media, telecom, digital infrastructure, and tech-enabled services companies.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200">Sell</h3>
+        <ul class="mt-4 space-y-3 text-sm text-slate-300">
+          <li><%= link_to "Sell Your Business", sell_path, class: "hover:text-white" %></li>
+          <li><%= link_to "Find Buyers", tools_find_buyers_path, class: "hover:text-white" %></li>
+          <li><%= link_to "Valuation Snapshot", tools_valuation_path, class: "hover:text-white" %></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200">Buy</h3>
+        <ul class="mt-4 space-y-3 text-sm text-slate-300">
+          <li><%= link_to "Buyer Network", buyers_path, class: "hover:text-white" %></li>
+          <li><%= link_to "Market Comps", tools_market_comps_path, class: "hover:text-white" %></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200">Industries</h3>
+        <ul class="mt-4 space-y-3 text-sm text-slate-300">
+          <li><%= link_to "SaaS", industry_path("saas"), class: "hover:text-white" %></li>
+          <li><%= link_to "MSP / IT Services", industry_path("msp-it-services"), class: "hover:text-white" %></li>
+          <li><%= link_to "Telecom", industry_path("telecom-connectivity"), class: "hover:text-white" %></li>
+          <li><%= link_to "Digital Media", industry_path("digital-media"), class: "hover:text-white" %></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200">Company</h3>
+        <ul class="mt-4 space-y-3 text-sm text-slate-300">
+          <li><%= link_to "About", about_path, class: "hover:text-white" %></li>
+          <li><%= link_to "Insights", insights_path, class: "hover:text-white" %></li>
+          <li><%= link_to "Contact", contact_path, class: "hover:text-white" %></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+      <p>© <%= Time.current.year %> AcquireTMT. All rights reserved.</p>
+
+      <div class="flex flex-wrap gap-4">
+        <%= link_to "Privacy", "#", class: "hover:text-white" %>
+        <%= link_to "Terms", "#", class: "hover:text-white" %>
+        <%= link_to "Disclaimer", "#", class: "hover:text-white" %>
+      </div>
+    </div>
+  </div>
+</footer>
