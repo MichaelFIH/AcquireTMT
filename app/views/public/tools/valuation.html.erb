@@ -513,3 +513,192 @@
     <% end %>
   </div>
 </section>
+<section class="bg-white py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+        What you get
+      </p>
+
+      <h2 class="mt-5 font-serif text-4xl font-medium text-brand-900 sm:text-5xl">
+        A clearer view of what your TMT business may be worth.
+      </h2>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-sm bg-brand-100 sm:grid-cols-2 lg:grid-cols-4">
+      <% [
+        ["Valuation Range", "A preliminary estimate based on revenue, profit, multiples, and market context."],
+        ["Deal Comps", "Relevant transaction examples and comparable business activity."],
+        ["Value Drivers", "Factors that may increase or reduce valuation in a buyer process."],
+        ["Advisor Review", "A path to discuss your valuation with an AcquireTMT advisor."]
+      ].each do |title, description| %>
+        <div class="bg-white p-7 hover-lift">
+          <h3 class="font-serif text-2xl font-medium text-brand-900"><%= title %></h3>
+          <p class="mt-3 text-sm leading-6 text-slate-600"><%= description %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+<section class="bg-white py-24 sm:py-28 data-controller="carousel">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <h2 class="font-serif text-4xl font-medium text-brand-900 sm:text-5xl">
+          What you’ll get
+        </h2>
+
+        <div class="mt-5 flex gap-2">
+          <button
+            type="button"
+            data-action="carousel#scrollLeft"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-100 text-brand-900 transition hover:bg-brand-50">
+            <%= lucide_icon "chevron-left", class: "h-4 w-4" %>
+          </button>
+
+          <button
+            type="button"
+            data-action="carousel#scrollRight"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-100 text-brand-900 transition hover:bg-brand-50">
+            <%= lucide_icon "chevron-right", class: "h-4 w-4" %>
+          </button>
+        </div>
+      </div>
+
+      <div class="max-w-md">
+        <p class="text-sm leading-6 text-slate-600">
+          A detailed and personalized valuation snapshot produced from your company profile, market signals, and comparable deal context.
+        </p>
+
+        <a href="#"
+          class="mt-5 inline-flex rounded-sm bg-brand-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-500">
+          Get Free Valuation
+        </a>
+      </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="mt-14">
+
+      <div
+  data-carousel-target="track"
+  class="flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+        <% [
+          [
+            "AI-powered valuation based on market data",
+            "Get an instant valuation based on recent M&A transactions and market signals.",
+            "valuation-card-1.png",
+            "chart-column"
+          ],
+          [
+            "Data-backed snapshot of your market position",
+            "Quickly see how your business compares to competitors.",
+            "valuation-card-2.png",
+            "chart-scatter"
+          ],
+          [
+            "Personalized valuation insights for your business",
+            "Understand what specific factors may increase or reduce your valuation.",
+            "valuation-card-3.png",
+            "trending-up"
+          ],
+          [
+            "Market sector valuation benchmarks",
+            "Review what owners in your category are asking and selling for.",
+            "valuation-card-4.png",
+            "chart-bar"
+          ],
+          [
+            "Comparable M&A transaction signals",
+            "Preview relevant transaction patterns and pricing benchmarks.",
+            "valuation-card-5.png",
+            "briefcase-business"
+          ]
+        ].each do |title, description, image, icon| %>
+
+          <div data-carousel-card class="min-w-[88%] sm:min-w-[48%] lg:min-w-[31%] snap-start overflow-hidden rounded-sm border border-brand-100 bg-brand-50 transition duration-300 hover:-translate-y-1 hover:shadow-soft">
+
+            <!-- Top -->
+            <div class="p-7">
+              <%= lucide_icon icon,
+                class: "h-6 w-6 text-brand-900" %>
+
+              <h3 class="mt-5 font-serif text-3xl font-medium leading-tight text-brand-900">
+                <%= title %>
+              </h3>
+            </div>
+
+            <!-- Image -->
+            <div class="px-7">
+              <%= image_tag image,
+                class: "h-72 w-full rounded-sm object-contain",
+                alt: title %>
+            </div>
+
+            <!-- Bottom -->
+            <div class="p-7">
+              <p class="text-sm leading-6 text-slate-600">
+                <%= description %>
+              </p>
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="bg-white py-20">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-sm bg-brand-900 p-8 text-white shadow-soft sm:p-10">
+      <h2 class="font-serif text-3xl font-medium text-white">
+        Get an instant business valuation
+      </h2>
+
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <input
+          type="url"
+          placeholder="Company website URL"
+          class="flex-1 rounded-sm border border-white/10 bg-white px-5 py-4 text-sm text-brand-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-300">
+
+        <a href="#"
+          class="inline-flex items-center justify-center rounded-sm bg-brand-300 px-8 py-4 text-sm font-bold text-brand-900 hover:bg-white">
+          Generate Report
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <h2 class="font-serif text-4xl font-medium text-brand-900 sm:text-5xl">
+      Valuation FAQ
+    </h2>
+
+    <div class="mt-12 divide-y divide-brand-100 border-y border-brand-100">
+      <% [
+        ["Is this a formal valuation?", "No. This is a preliminary valuation snapshot designed to help owners understand potential value drivers before a formal process."],
+        ["What affects my valuation?", "Revenue quality, EBITDA, recurring revenue, customer concentration, growth profile, contracts, market demand, and buyer interest can all affect valuation."],
+        ["Do I need to be ready to sell?", "No. Many owners use valuation snapshots to understand options before deciding whether to pursue a sale process."],
+        ["Is my information confidential?", "Yes. Information submitted through AcquireTMT is treated confidentially and is not shared with buyers without approval."]
+      ].each do |question, answer| %>
+        <details class="group py-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6">
+            <h3 class="font-serif text-2xl font-medium text-brand-900"><%= question %></h3>
+            <span class="shrink-0 transition group-open:rotate-45">
+              <%= lucide_icon "plus", class: "h-5 w-5 text-brand-900" %>
+            </span>
+          </summary>
+          <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600"><%= answer %></p>
+        </details>
+      <% end %>
+    </div>
+  </div>
+</section>

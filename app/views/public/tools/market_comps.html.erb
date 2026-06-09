@@ -1,156 +1,359 @@
-<section class="bg-brand-50 py-20">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-3xl text-center animate-fade-up">
-      <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-700 shadow-soft">
-        <%= lucide_icon "chart-line", class: "h-4 w-4" %>
-        TMT Market Comps Report
-      </span>
+<section class="min-h-screen bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" data-controller="market-comps">
 
-      <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-brand-900 sm:text-5xl">
-        Benchmark your TMT business
-      </h1>
+    <%= form_with model: Lead.new, url: leads_path do |f| %>
+      <%= f.hidden_field :source, value: "market_comps" %>
 
-      <p class="mt-5 text-lg leading-8 text-slate-600">
-        Compare your company against relevant sector multiples, comparable transactions, public/private benchmarks, and buyer demand indicators.
-      </p>
+      <!-- STEP 1: WEBSITE -->
+      <div data-market-comps-target="websiteStep" class="mx-auto max-w-5xl text-center">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-900 shadow-soft">
+          <%= lucide_icon "sparkles", class: "h-4 w-4 text-brand-300" %>
+          Market Comps Tool
+        </div>
+
+        <h1 class="mt-6 font-serif text-5xl font-medium leading-tight text-brand-900 sm:text-6xl lg:text-7xl">
+          See what similar TMT companies
+          <br>
+          are selling for today
+        </h1>
+
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+          Review preliminary market comps, sector multiples, pricing signals, and comparable business activity.
+        </p>
+
+        <div class="mx-auto mt-10 max-w-xl rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+          <%= f.label :company_website, "Enter your company website", class: "mb-2 block text-left font-serif text-2xl font-medium text-brand-900" %>
+
+          <%= f.url_field :company_website,
+            placeholder: "Company website URL",
+            data: { market_comps_target: "websiteInput" },
+            class: "w-full rounded-sm border border-brand-100 px-4 py-4 text-sm text-brand-900 placeholder:text-slate-400" %>
+
+          <button
+            type="button"
+            data-action="market-comps#showFinancials"
+            class="mt-5 w-full rounded-sm bg-brand-900 px-6 py-4 text-sm font-bold text-white transition hover:bg-brand-500">
+            Next
+          </button>
+
+          <p class="mt-4 text-center text-xs text-slate-500">
+            No email required to preview. 100% confidential.
+          </p>
+        </div>
+      </div>
+
+      <!-- STEP 2: FINANCIAL DATA -->
+      <div data-market-comps-target="financialStep" class="mx-auto hidden max-w-6xl">
+        <div class="grid gap-8 lg:grid-cols-2 lg:items-stretch">
+
+          <div class="rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+            <div class="flex items-start justify-between gap-6">
+              <h2 class="font-serif text-4xl font-medium leading-tight text-brand-900">
+                Now, let’s get some basic financial data
+              </h2>
+
+              <span class="font-serif text-2xl text-brand-900">2/2</span>
+            </div>
+
+            <div class="mt-8 border-t border-brand-100 pt-8">
+              <div>
+                <%= label_tag "comps_revenue", "Revenue", class: "mb-2 block text-sm font-semibold text-slate-600" %>
+                <%= number_field_tag "comps_revenue",
+                  nil,
+                  min: 0,
+                  placeholder: "What were your 2025 sales?",
+                  data: { market_comps_target: "revenueInput" },
+                  class: "w-full rounded-sm border border-brand-100 bg-white px-4 py-4 text-sm text-brand-900 placeholder:text-slate-400" %>
+              </div>
+
+              <div class="mt-5">
+                <%= label_tag "comps_profit", "Pre-Tax Profit", class: "mb-2 block text-sm font-semibold text-slate-600" %>
+                <%= number_field_tag "comps_profit",
+                  nil,
+                  min: 0,
+                  placeholder: "What is your net profit before taxes?",
+                  data: { market_comps_target: "profitInput" },
+                  class: "w-full rounded-sm border border-brand-100 bg-white px-4 py-4 text-sm text-brand-900 placeholder:text-slate-400" %>
+              </div>
+
+              <div class="mt-5">
+                <%= label_tag "comps_salary", "Owner Salary", class: "mb-2 block text-sm font-semibold text-slate-600" %>
+                <%= number_field_tag "comps_salary",
+                  nil,
+                  min: 0,
+                  placeholder: "How much do you pay yourself?",
+                  data: { market_comps_target: "salaryInput" },
+                  class: "w-full rounded-sm border border-brand-100 bg-white px-4 py-4 text-sm text-brand-900 placeholder:text-slate-400" %>
+              </div>
+
+              <button
+                type="button"
+                data-action="market-comps#startReport"
+                class="mt-8 w-full rounded-sm bg-brand-900 px-6 py-4 text-sm font-bold text-white transition hover:bg-brand-500">
+                Generate Market Comps Report
+              </button>
+
+              <button
+                type="button"
+                data-action="market-comps#backToWebsite"
+                class="mt-3 w-full rounded-sm border border-brand-100 px-6 py-4 text-sm font-bold text-brand-900 hover:bg-brand-50">
+                Back
+              </button>
+
+              <p class="mt-6 text-center text-sm leading-6 text-slate-500">
+                Free instant market comps. No email or sign-up necessary.
+              </p>
+            </div>
+          </div>
+
+          <div class="rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+  <div data-market-comps-target="previewIntro" class="hidden animate-fade-up">
+    <h3 class="font-serif text-4xl font-medium text-brand-900">
+      <span data-market-comps-target="companyName">Your Business</span>
+    </h3>
+
+    <p class="mt-3 text-base leading-7 text-slate-600">
+      Preliminary company context is being reviewed for sector comparables and market positioning.
+    </p>
+
+    <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
+      <%= lucide_icon "globe", class: "h-4 w-4" %>
+      www.company.com
     </div>
+  </div>
 
-    <div class="mx-auto mt-14 grid max-w-6xl gap-10 lg:grid-cols-5">
-      <!-- Left -->
-      <div class="lg:col-span-2">
-        <div class="rounded-3xl bg-brand-900 p-8 text-white shadow-soft">
-          <h2 class="text-2xl font-bold">
-            What’s included
-          </h2>
+  <div class="mt-8 border-t border-brand-100 pt-8 hidden animate-fade-up" data-market-comps-target="previewProducts">
+    <p class="text-lg font-semibold text-brand-900">Products & Services</p>
 
-          <div class="mt-8 space-y-5">
+    <div class="mt-4 flex flex-wrap gap-3">
+      <% ["software", "managed services", "telecom", "cloud", "data"].each do |tag| %>
+        <span class="rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"><%= tag %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-8 border-t border-brand-100 pt-8 hidden animate-fade-up" data-market-comps-target="previewMarkets">
+    <p class="text-lg font-semibold text-brand-900">End Markets</p>
+
+    <div class="mt-4 flex flex-wrap gap-3">
+      <% ["B2B", "enterprise", "SMB", "digital infrastructure", "technology buyers"].each do |tag| %>
+        <span class="rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"><%= tag %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="h-4 w-full rounded-full bg-slate-200"></div>
+    <div class="h-4 w-10/12 rounded-full bg-slate-200"></div>
+    <div class="h-4 w-8/12 rounded-full bg-slate-200"></div>
+    <div class="h-10 w-full rounded-sm bg-slate-200"></div>
+    <div class="h-10 w-8/12 rounded-sm bg-slate-200"></div>
+  </div>
+</div>
+
+        </div>
+      </div>
+
+      <!-- STEP 3: PROCESSING -->
+      <div data-market-comps-target="loadingStep" class="mx-auto hidden max-w-6xl">
+        <div class="grid gap-8 lg:grid-cols-2 lg:items-stretch">
+
+          <div class="rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+            <h2 class="font-serif text-4xl font-medium text-brand-900">
+              Working on your report...
+              <span data-market-comps-target="progressText" class="float-right">0%</span>
+            </h2>
+
+            <div class="mt-6 h-3 overflow-hidden rounded-full bg-brand-50">
+              <div data-market-comps-target="progressBar" class="h-full w-0 rounded-full bg-brand-300 transition-all duration-300"></div>
+            </div>
+
+            <div class="mt-8">
+              <p data-market-comps-target="loadingTitle" class="font-bold text-brand-900">
+                Analyzing website data
+              </p>
+
+              <p data-market-comps-target="loadingDescription" class="mt-2 text-sm leading-6 text-slate-600">
+                Reviewing business model and company signals.
+              </p>
+            </div>
+
+            <div data-market-comps-target="stepList" class="mt-8 space-y-3"></div>
+          </div>
+
+          <div class="rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+            <h3 class="font-serif text-4xl font-medium text-brand-900">
+              <span data-market-comps-target="companyName">Your Business</span>
+            </h3>
+
+            <p class="mt-3 text-base leading-7 text-slate-600">
+              Preliminary company context is being reviewed for sector comparables and market positioning.
+            </p>
+
+            <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
+              <%= lucide_icon "globe", class: "h-4 w-4" %>
+              www.company.com
+            </div>
+
+            <div class="mt-8 border-t border-brand-100 pt-8">
+              <p class="text-lg font-semibold text-brand-900">Products & Services</p>
+
+              <div class="mt-4 flex flex-wrap gap-3">
+                <% ["software", "managed services", "telecom", "cloud", "data"].each do |tag| %>
+                  <span class="rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"><%= tag %></span>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mt-8 border-t border-brand-100 pt-8">
+              <p class="text-lg font-semibold text-brand-900">End Markets</p>
+
+              <div class="mt-4 flex flex-wrap gap-3">
+                <% ["B2B", "enterprise", "SMB", "digital infrastructure", "technology buyers"].each do |tag| %>
+                  <span class="rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"><%= tag %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STEP 4: REPORT -->
+      <div data-market-comps-target="reportStep" class="mx-auto hidden max-w-6xl">
+        <h2 class="font-serif text-4xl font-medium text-brand-900">
+          Your industry comparables report is ready!
+        </h2>
+
+        <!-- Snapshot Cards -->
+        <div class="mt-6 rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+          <p class="text-sm text-slate-600">
+            Computer Systems Design and Related Services sector M&A snapshot
+          </p>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <% [
-              ["Comparable companies", "Relevant TMT businesses and comparable transaction patterns."],
-              ["Revenue & EBITDA multiples", "Sector benchmarks and valuation ranges."],
-              ["Buyer demand", "Signals around current acquisition appetite."],
-              ["Market positioning", "How your business compares in context."]
-            ].each do |title, desc| %>
+              ["Current Listings", "418"],
+              ["Combined Value", "$649.8M"],
+              ["Median Price/Revenue", "1.3×"],
+              ["Median Price/Cash Flow", "3.5×"]
+            ].each do |label, value| %>
 
-              <div class="flex gap-3">
-                <%= lucide_icon "circle-check-big",
-                  class: "mt-1 h-5 w-5 shrink-0 text-emerald-400" %>
-
-                <div>
-                  <p class="font-semibold"><%= title %></p>
-                  <p class="text-sm text-slate-300">
-                    <%= desc %>
-                  </p>
-                </div>
+              <div class="rounded-sm border border-brand-100 bg-brand-50 p-5 text-center">
+                <p class="text-xs text-slate-500"><%= label %></p>
+                <p class="mt-2 font-serif text-3xl font-medium text-brand-900"><%= value %></p>
               </div>
 
             <% end %>
           </div>
 
-          <p class="mt-8 text-xs leading-5 text-slate-400">
-            This report is informational and not financial, tax, legal or investment advice.
+          <div class="mt-5 rounded-sm border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-slate-600">
+            <strong class="text-brand-900">What this means for you:</strong>
+            There are active buyers and listings in your sector, with pricing signals based on revenue and cash flow multiples.
+          </div>
+        </div>
+
+        <!-- Market Section -->
+        <div class="mt-8 rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+          <h3 class="text-xl font-bold text-brand-900">What’s Hot on the Market</h3>
+          <p class="mt-2 text-sm text-slate-600">Compare top business specialties and what sellers are asking today.</p>
+
+          <div class="mt-6 overflow-hidden rounded-sm border border-brand-100">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-brand-50 text-slate-600">
+                <tr>
+                  <th class="p-4">Specialty</th>
+                  <th class="p-4">% of Total</th>
+                  <th class="p-4">Median P/CF</th>
+                  <th class="p-4">Median Asking</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr class="border-t border-brand-100">
+                  <td class="p-4">Computer Systems Design and Related Services</td>
+                  <td class="p-4">100%</td>
+                  <td class="p-4">3.5×</td>
+                  <td class="p-4">$650K</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Listings -->
+        <div class="mt-8 rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+          <h3 class="text-xl font-bold text-brand-900">Relevant Listings in Your Space</h3>
+
+          <div class="mt-6 grid gap-5 lg:grid-cols-2">
+            <% [
+              ["Loyalty SaaS Platform", "$702K", "$642K", "$642K"],
+              ["Shopify SaaS Apps", "$702K", "$642K", "$642K"]
+            ].each do |name, revenue, ebitda, cash_flow| %>
+
+              <div class="rounded-sm border border-brand-100 bg-brand-50 p-5">
+                <h4 class="font-serif text-2xl font-medium text-brand-900"><%= name %></h4>
+
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                  SaaS company offering proprietary software with recurring revenue and strong buyer interest.
+                </p>
+
+                <div class="mt-5 grid grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <p class="text-slate-500">Revenue</p>
+                    <p class="font-bold text-brand-900"><%= revenue %></p>
+                  </div>
+                  <div>
+                    <p class="text-slate-500">EBITDA</p>
+                    <p class="font-bold text-brand-900"><%= ebitda %></p>
+                  </div>
+                  <div>
+                    <p class="text-slate-500">Cash Flow</p>
+                    <p class="font-bold text-brand-900"><%= cash_flow %></p>
+                  </div>
+                </div>
+              </div>
+
+            <% end %>
+          </div>
+        </div>
+
+        <!-- CTA Form -->
+        <div class="mt-8 rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+          <h3 class="font-serif text-3xl font-medium text-brand-900">
+            Every strong exit starts with expert guidance
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Connect with an AcquireTMT advisor to fine-tune your valuation and compare your company against relevant market comps.
           </p>
+
+          <div class="mt-6 rounded-sm bg-brand-900 p-7 text-white">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-300">
+              Claim your free M&A expert session
+            </p>
+
+            <h4 class="mt-3 font-serif text-3xl font-medium">
+              Take the first step today.
+            </h4>
+
+            <div class="mt-5 space-y-3">
+              <%= f.text_field :first_name, placeholder: "Full Name", class: "w-full rounded-sm border border-white/10 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400" %>
+              <%= f.email_field :email, placeholder: "Email Address", class: "w-full rounded-sm border border-white/10 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400" %>
+              <%= f.telephone_field :phone, placeholder: "Mobile Number", class: "w-full rounded-sm border border-white/10 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400" %>
+
+              <%= f.select :message,
+                ["When are you looking to sell?", "Immediately", "3-6 months", "6-12 months", "Just exploring"],
+                {},
+                class: "w-full rounded-sm border border-white/10 bg-white px-4 py-3 text-sm text-brand-900" %>
+
+              <%= f.submit "Book 15 minute call",
+                class: "w-full rounded-sm bg-brand-300 px-6 py-4 text-sm font-bold text-brand-900 hover:bg-white" %>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Right Form -->
-      <div class="lg:col-span-3">
-        <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
-          <h2 class="text-2xl font-bold text-brand-900">
-            Generate comps report
-          </h2>
-
-          <p class="mt-2 text-sm text-slate-500">
-            Share your business details for a preliminary market benchmark.
-          </p>
-
-          <%= form_with model: Lead.new,
-            url: leads_path,
-            class: "mt-8 space-y-6" do |f| %>
-
-            <%= f.hidden_field :source,
-              value: "market_comps" %>
-
-            <div class="grid gap-5 sm:grid-cols-2">
-              <div>
-                <%= f.label :first_name,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.text_field :first_name,
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-
-              <div>
-                <%= f.label :last_name,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.text_field :last_name,
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-            </div>
-
-            <div class="grid gap-5 sm:grid-cols-2">
-              <div>
-                <%= f.label :email,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.email_field :email,
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-
-              <div>
-                <%= f.label :phone,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.telephone_field :phone,
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-            </div>
-
-            <div>
-              <%= f.label :company_name,
-                class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-              <%= f.text_field :company_name,
-                class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-            </div>
-
-            <div>
-              <%= f.label :company_website,
-                "Company Website",
-                class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-              <%= f.url_field :company_website,
-                class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-            </div>
-
-            <div class="grid gap-5 sm:grid-cols-2">
-              <div>
-                <%= f.label :company_type,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.select :company_type,
-                  ["SaaS", "MSP / IT Services", "Telecom", "Digital Media", "Cybersecurity", "Other"],
-                  {},
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-
-              <div>
-                <%= f.label :revenue_range,
-                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
-
-                <%= f.select :revenue_range,
-                  ["Under $1M", "$1M - $5M", "$5M - $25M", "$25M+"],
-                  {},
-                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
-              </div>
-            </div>
-
-            <%= f.submit "Generate Market Comps Report",
-              class: "w-full rounded-full bg-brand-900 px-6 py-4 text-sm font-bold text-white hover:bg-slate-800" %>
-
-          <% end %>
-        </div>
-      </div>
-    </div>
+    <% end %>
   </div>
 </section>
