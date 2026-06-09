@@ -2,23 +2,16 @@
 
 /* Brand Theme */
 @theme {
+  --color-brand-50: #F3F0E8;
+  --color-brand-300: #C8A24A;
+  --color-brand-500: #1E4E8C;
+  --color-brand-700: #6B7A8F;
+  --color-brand-900: #0B1F3A;
+
+  --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Inter", sans-serif;
 
-  /* Brand Colors */
-  --color-brand-50: #F8FAFC;
-  --color-brand-100: #E2E8F0;
-  --color-brand-500: #2563EB;
-  --color-brand-700: #1D4ED8;
-  --color-brand-900: #0F172A;
-
-  /* Accent */
-  --color-accent-700: #0F766E;
-
-  /* Shadows */
-  --shadow-soft: 0 10px 40px rgba(15, 23, 42, 0.08);
-
-  /* Radius */
-  --radius-2xl: 1rem;
+  --shadow-soft: 0 10px 40px rgba(11, 31, 58, 0.08);
 }
 
 /* Global Defaults */

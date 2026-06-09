@@ -1,4 +1,151 @@
-<div>
-  <h1 class="font-bold text-4xl">Public::Tools#find_buyers</h1>
-  <p>Find me in app/views/public/tools/find_buyers.html.erb</p>
-</div>
+<section class="bg-brand-50 py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center animate-fade-up">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-700 shadow-soft">
+        <%= lucide_icon "network", class: "h-4 w-4" %>
+        AcquireTMT BuyerMap
+      </span>
+
+      <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-brand-900 sm:text-5xl">
+        Find buyers for your TMT business
+      </h1>
+
+      <p class="mt-5 text-lg leading-8 text-slate-600">
+        Get a preliminary buyer universe across strategic acquirers, PE-backed platforms, family offices, search funds, and international buyers.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-14 grid max-w-6xl gap-10 lg:grid-cols-5">
+      <!-- Left -->
+      <div class="lg:col-span-2">
+        <div class="rounded-3xl bg-brand-900 p-8 text-white shadow-soft">
+          <h2 class="text-2xl font-bold">
+            What you'll receive
+          </h2>
+
+          <div class="mt-8 space-y-5">
+            <% [
+              ["Buyer categories", "Strategic, PE-backed, sponsor-backed and international buyers."],
+              ["TMT fit assessment", "How your company may fit buyer demand."],
+              ["Preliminary outreach direction", "Understand likely acquisition interest."],
+              ["Confidential review", "Shared privately with the AcquireTMT team."]
+            ].each do |title, desc| %>
+
+              <div class="flex gap-3">
+                <%= lucide_icon "circle-check-big",
+                  class: "mt-1 h-5 w-5 shrink-0 text-emerald-400" %>
+
+                <div>
+                  <p class="font-semibold"><%= title %></p>
+                  <p class="text-sm text-slate-300">
+                    <%= desc %>
+                  </p>
+                </div>
+              </div>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Form -->
+      <div class="lg:col-span-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-brand-900">
+            Tell us about your business
+          </h2>
+
+          <p class="mt-2 text-sm text-slate-500">
+            We'll use this to generate a preliminary BuyerMap.
+          </p>
+
+          <%= form_with model: Lead.new,
+            url: leads_path,
+            class: "mt-8 space-y-6" do |f| %>
+
+            <%= f.hidden_field :source, value: "buyer_map" %>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <%= f.label :first_name,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.text_field :first_name,
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100" %>
+              </div>
+
+              <div>
+                <%= f.label :last_name,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.text_field :last_name,
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+              </div>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <%= f.label :email,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.email_field :email,
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+              </div>
+
+              <div>
+                <%= f.label :phone,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.telephone_field :phone,
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+              </div>
+            </div>
+
+            <div>
+              <%= f.label :company_name,
+                class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+              <%= f.text_field :company_name,
+                class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+            </div>
+
+            <div>
+              <%= f.label :company_website,
+                "Company Website",
+                class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+              <%= f.url_field :company_website,
+                class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <%= f.label :company_type,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.select :company_type,
+                  ["SaaS", "MSP / IT Services", "Telecom", "Digital Media", "Cybersecurity", "Other"],
+                  {},
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+              </div>
+
+              <div>
+                <%= f.label :revenue_range,
+                  class: "mb-2 block text-sm font-semibold text-slate-700" %>
+
+                <%= f.select :revenue_range,
+                  ["Under $1M", "$1M - $5M", "$5M - $25M", "$25M+"],
+                  {},
+                  class: "w-full rounded-2xl border border-slate-300 px-4 py-3" %>
+              </div>
+            </div>
+
+            <%= f.submit "Generate BuyerMap",
+              class: "w-full rounded-full bg-brand-900 px-6 py-4 text-sm font-bold text-white hover:bg-slate-800" %>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

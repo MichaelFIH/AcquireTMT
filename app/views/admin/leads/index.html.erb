@@ -1,0 +1,38 @@
+<section class="bg-slate-50 py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-extrabold text-brand-900">Leads</h1>
+    <p class="mt-2 text-slate-600">View all BuyerMap, valuation, and market comps submissions.</p>
+
+    <div class="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Name</th>
+              <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Company</th>
+              <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Source</th>
+              <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Status</th>
+              <th class="px-6 py-4"></th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-slate-200">
+            <% @leads.each do |lead| %>
+              <tr>
+                <td class="px-6 py-4 text-sm font-semibold text-brand-900">
+                  <%= [lead.first_name, lead.last_name].compact.join(" ") %>
+                </td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= lead.company_name %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= lead.source&.humanize %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= lead.status&.humanize %></td>
+                <td class="px-6 py-4 text-right">
+                  <%= link_to "View", admin_lead_path(lead), class: "text-sm font-bold text-brand-700" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,4 +1,303 @@
-<div>
-  <h1 class="font-bold text-4xl">Public::Pages#sell</h1>
-  <p>Find me in app/views/public/pages/sell.html.erb</p>
-</div>
+<section class="bg-brand-900 py-24 text-white sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-12 lg:items-center">
+     <div class="lg:col-span-7 animate-fade-up">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+          Sell your TMT business
+        </p>
+
+        <h1 class="mt-5 font-serif text-5xl font-medium leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
+          Confidential advisory for technology, media, and telecom exits.
+        </h1>
+
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-white/70">
+          AcquireTMT helps owners of SaaS, telecom, media, digital services, MSPs, cloud, data, infrastructure, and tech-enabled businesses prepare for a stronger sale process.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <%= link_to tools_find_buyers_path,
+            class: "inline-flex items-center justify-center rounded-sm bg-brand-300 px-6 py-4 text-sm font-bold text-brand-900 hover:bg-white" do %>
+            Find Buyers for My Business
+          <% end %>
+
+          <%= link_to tools_valuation_path,
+            class: "inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-4 text-sm font-bold text-white hover:bg-white/10" do %>
+            Get Valuation Snapshot
+          <% end %>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+       <div class="rounded-sm border border-white/10 bg-white/10 p-6 backdrop-blur animate-fade-up animate-delay-200">
+          <h2 class="font-serif text-3xl font-medium text-white">
+            What sellers receive
+          </h2>
+
+          <div class="mt-6 space-y-4">
+            <% [
+              "Buyer universe",
+              "Valuation view",
+              "Confidential outreach campaign",
+              "CIM / teaser support",
+              "NDA and diligence coordination",
+              "Offer comparison"
+            ].each do |item| %>
+
+              <div class="flex items-start gap-3 border-b border-white/10 pb-3 last:border-b-0">
+                <%= lucide_icon "check", class: "mt-1 h-4 w-4 text-brand-300" %>
+                <span class="text-sm text-white/75"><%= item %></span>
+              </div>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7 animate-fade-up">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+          Who we help
+        </p>
+
+        <h2 class="mt-5 font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl">
+          Built for TMT founders, owners, and operators.
+        </h2>
+      </div>
+
+      <p class="text-lg leading-8 text-slate-600 lg:col-span-5">
+        AcquireTMT focuses on businesses where buyer fit, recurring revenue, contracts, technical assets, and market positioning matter.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-sm bg-brand-100 sm:grid-cols-2 lg:grid-cols-3">
+      <% [
+        ["SaaS Companies", "ARR, churn, customer retention, expansion revenue and product stickiness."],
+        ["MSP / IT Services", "Managed IT, cybersecurity services, cloud migration and recurring contracts."],
+        ["Telecom & Connectivity", "Fiber, VoIP, wireless, IoT connectivity and managed telecom businesses."],
+        ["Digital Media", "Content sites, newsletters, communities, podcasts and media portfolios."],
+        ["Cloud & Infrastructure", "Hosting, DevOps, observability, infrastructure software and automation."],
+        ["Data, Analytics & AI", "Analytics platforms, data services, AI tools, ML operations and data infrastructure."]
+      ].each do |title, description| %>
+
+        <div class="bg-white p-7 hover-lift">
+          <h3 class="font-serif text-2xl font-medium text-brand-900">
+            <%= title %>
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            <%= description %>
+          </p>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</section>
+<section class="bg-white py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+        Buyer criteria
+      </p>
+
+      <h2 class="mt-5 font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl lg:text-6xl">
+        What buyers look for in TMT companies.
+      </h2>
+
+      <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+        Buyers evaluate revenue quality, margins, contracts, customer concentration, retention, technical assets, and growth profile.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-sm bg-brand-100 sm:grid-cols-2 lg:grid-cols-3">
+      <% [
+        ["Recurring Revenue", "ARR, MRR, long-term contracts, renewals, and predictable customer demand."],
+        ["Customer Quality", "Retention, concentration, buyer dependence, churn, and expansion potential."],
+        ["Margins & EBITDA", "Profitability, cost structure, operational efficiency, and normalized earnings."],
+        ["Technology Assets", "IP, software, data, infrastructure, integrations, and defensible technical capabilities."],
+        ["Market Position", "Niche strength, buyer demand, competitive edge, and sector-specific growth."],
+        ["Diligence Readiness", "Clean financials, contracts, data room materials, and organized seller documentation."]
+      ].each do |title, description| %>
+
+        <div class="bg-white p-7 hover-lift">
+          <h3 class="font-serif text-2xl font-medium text-brand-900">
+            <%= title %>
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            <%= description %>
+          </p>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</section>
+<section class="bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-start">
+      <div class="lg:col-span-5">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+          AcquireTMT process
+        </p>
+
+        <h2 class="mt-5 font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl">
+          From preparation to buyer conversations.
+        </h2>
+
+        <p class="mt-5 text-lg leading-8 text-slate-600">
+          AcquireTMT helps owners prepare materials, understand value, identify buyers, and run a confidential outreach process.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 animate-fade-up">
+        <div class="divide-y divide-brand-100 border-y border-brand-100">
+          <% [
+            ["01", "Business review", "Understand business model, revenue mix, customer profile, contracts, and exit goals."],
+            ["02", "Valuation view", "Prepare valuation context using revenue, EBITDA, ARR/MRR, margins, retention, and buyer demand."],
+            ["03", "Buyer universe", "Build a targeted buyer list across strategics, PE platforms, independent sponsors, family offices, and international acquirers."],
+            ["04", "Confidential outreach", "Approach qualified buyers privately with controlled messaging and seller protection."],
+            ["05", "Offers and diligence", "Support offer comparison, NDA flow, diligence coordination, and next-step decision making."]
+          ].each do |number, title, description| %>
+
+            <div class="grid gap-5 py-6 sm:grid-cols-12">
+              <div class="sm:col-span-2">
+                <span class="font-serif text-3xl text-brand-300">
+                  <%= number %>
+                </span>
+              </div>
+
+              <div class="sm:col-span-4">
+                <h3 class="font-serif text-2xl font-medium text-brand-900">
+                  <%= title %>
+                </h3>
+              </div>
+
+              <div class="sm:col-span-6">
+                <p class="text-sm leading-7 text-slate-600">
+                  <%= description %>
+                </p>
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="bg-white py-24 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+        What you receive
+      </p>
+
+      <h2 class="mt-5 font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl">
+        A clearer sell-side process from day one.
+      </h2>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-sm bg-brand-100 sm:grid-cols-2 lg:grid-cols-3">
+      <% [
+        ["Valuation View", "Understand value drivers using revenue, EBITDA, ARR/MRR, gross margin, churn, contracts, and buyer demand."],
+        ["Buyer Universe", "A targeted list of strategic buyers, PE platforms, independent sponsors, family offices, and international acquirers."],
+        ["Outreach Campaign", "Confidential buyer outreach designed around sector fit, positioning, and seller protection."],
+        ["CIM / Teaser Support", "Support for buyer-facing materials that explain the opportunity clearly."],
+        ["NDA & Diligence Coordination", "Structured handling of buyer access, information requests, and diligence readiness."],
+        ["Offer Comparison", "Compare buyer fit, valuation, deal structure, timing, and certainty of close."]
+      ].each do |title, description| %>
+
+        <div class="bg-white p-7 hover-lift">
+          <h3 class="font-serif text-2xl font-medium text-brand-900"><%= title %></h3>
+          <p class="mt-3 text-sm leading-6 text-slate-600"><%= description %></p>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</section>
+<section class="bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+    <div class="text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">
+        FAQ
+      </p>
+
+      <h2 class="mt-5 font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl">
+        Common Questions From Sellers
+      </h2>
+    </div>
+
+    <div class="mt-14 divide-y divide-slate-200 border-y border-slate-200">
+
+      <% [
+        [
+          "What types of businesses do you work with?",
+          "AcquireTMT focuses on SaaS, telecom, MSPs, cloud infrastructure, digital media, cybersecurity, AI, and technology-enabled businesses."
+        ],
+        [
+          "Can I sell confidentially?",
+          "Yes. Confidentiality is central to the process and buyer outreach is managed carefully."
+        ],
+        [
+          "Do I need to be ready to sell now?",
+          "No. Many owners begin by exploring valuation, buyer fit, and exit readiness."
+        ],
+        [
+          "What size businesses do you support?",
+          "Typically profitable businesses doing roughly $1M–$100M in revenue."
+        ]
+      ].each do |question, answer| %>
+
+        <details class="group py-6">
+          <summary class="flex cursor-pointer list-none items-center justify-between">
+            <h3 class="font-serif text-2xl font-medium text-brand-900">
+              <%= question %>
+            </h3>
+
+            <span class="transition group-open:rotate-45">
+              <%= lucide_icon "plus", class: "h-5 w-5 text-brand-900" %>
+            </span>
+          </summary>
+
+          <p class="mt-4 text-base leading-8 text-slate-600">
+            <%= answer %>
+          </p>
+        </details>
+
+      <% end %>
+    </div>
+
+  </div>
+</section>
+<section class="bg-brand-900 py-24 text-white sm:py-28">
+  <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="font-serif text-4xl font-medium leading-tight text-white sm:text-5xl lg:text-6xl">
+      Ready to explore buyer interest?
+    </h2>
+
+    <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/70">
+      Start with a BuyerMap and understand which strategic buyers, PE-backed platforms, family offices, search funds, and international acquirers may fit your business.
+    </p>
+
+    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+      <%= link_to tools_find_buyers_path,
+        class: "inline-flex items-center justify-center rounded-sm bg-brand-300 px-6 py-4 text-sm font-bold text-brand-900 transition duration-300 hover:bg-white hover:scale-[1.02] " do %>
+        Find Buyers for My Business
+      <% end %>
+
+      <%= link_to tools_valuation_path,
+        class: "inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-4 text-sm font-bold text-white transition duration-300 hover:bg-white/10 hover:scale-[1.02]" do %>
+        Get Valuation Snapshot
+      <% end %>
+    </div>
+  </div>
+</section>

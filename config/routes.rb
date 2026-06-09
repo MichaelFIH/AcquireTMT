@@ -13,5 +13,11 @@ Rails.application.routes.draw do
     get "tools/market-comps", to: "tools#market_comps"
 
     get "industries/:slug", to: "industries#show", as: :industry
+
+    resources :leads, only: [:create]
+  end
+
+  namespace :admin do
+    resources :leads, only: [:index, :show, :update]
   end
 end
