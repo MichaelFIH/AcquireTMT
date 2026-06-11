@@ -11,6 +11,7 @@
     </div>
 
     <div class="mt-8 rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+      <%= render "shared/google_button" %>
       <%= form_with model: @user, url: sign_up_path do |f| %>
         <% if @user.errors.any? %>
           <div class="mb-5 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">

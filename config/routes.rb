@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
 
+  # Google OAuth
+  get "/auth/:provider/callback", to: "sessions/omniauth#create"
+  get "/auth/failure", to: redirect("/sign_in")
+
   # Accounts & dashboards (buyer + seller portals)
   get  "sign_up", to: "registrations#new",  as: :sign_up
   post "sign_up", to: "registrations#create"

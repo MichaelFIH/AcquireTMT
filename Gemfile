@@ -71,3 +71,6 @@ group :test do
 end
 # Gemfile
 gem "lucide-rails"
+# Google OAuth sign-in
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"

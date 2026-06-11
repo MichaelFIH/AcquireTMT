@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_11_180000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_11_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -154,7 +154,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_11_180000) do
     t.string "geographic_focus", default: [], null: false, array: true
     t.text "additional_context"
     t.string "approval_status", default: "incomplete", null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
   add_foreign_key "deal_accesses", "deals"

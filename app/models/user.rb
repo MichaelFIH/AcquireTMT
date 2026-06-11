@@ -43,6 +43,21 @@ class User < ApplicationRecord
       .where("ev_max IS NULL OR ev_max >= ?", deal.asking_price.to_i)
   }
 
+  # Find or create a user from a Google OmniAuth callback. New OAuth users land
+  # as buyers (the Google flow is the Buyer Network) and go through onboarding.
+  def self.from_omniauth(auth)
+    return nil unless auth&.info&.email.present?
+
+    user = find_by(provider: auth.provider, uid: auth.uid) || find_by(email_address: auth.info.email) || new(role: "buyer")
+    user.provider = auth.provider
+    user.uid = auth.uid
+    user.email_address = auth.info.email if user.email_address.blank?
+    user.name = auth.info.name if user.name.blank?
+    user.password = SecureRandom.alphanumeric(24) if user.new_record?
+    user.save
+    user
+  end
+
   def display_name
     name.presence || email_address.split("@").first
   end
