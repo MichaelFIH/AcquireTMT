@@ -17,6 +17,16 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :role, inclusion: { in: ROLES }
 
+  # Buyers whose (set) mandate matches a deal — for new-listing alerts. Buyers
+  # who haven't set a mandate aren't alerted (they've expressed no interest).
+  scope :matching_deal, ->(deal) {
+    buyer
+      .where("array_length(mandate_industries, 1) > 0")
+      .where("? = ANY (mandate_industries)", deal.industry)
+      .where("mandate_min_revenue IS NULL OR mandate_min_revenue <= ?", deal.revenue.to_i)
+      .where("mandate_max_revenue IS NULL OR mandate_max_revenue >= ?", deal.revenue.to_i)
+  }
+
   def display_name
     name.presence || email_address.split("@").first
   end

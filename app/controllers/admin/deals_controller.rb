@@ -12,7 +12,8 @@ class Admin::DealsController < Admin::BaseController
   def create
     @deal = Deal.new(deal_params)
     if @deal.save
-      redirect_to admin_deals_path, notice: "Deal created."
+      notify_matching_buyers(@deal) if @deal.status == "active"
+      redirect_to admin_deals_path, notice: "Deal created#{" — #{@matched} buyer alert(s) queued" if @matched.to_i.positive?}."
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,6 +39,15 @@ class Admin::DealsController < Admin::BaseController
 
   def set_deal
     @deal = Deal.find(params[:id])
+  end
+
+  # Email buyers whose mandate matches the new deal (background-delivered).
+  def notify_matching_buyers(deal)
+    buyers = User.matching_deal(deal)
+    @matched = buyers.count
+    buyers.find_each do |buyer|
+      DealMailer.with(user: buyer, deal: deal).new_match.deliver_later
+    end
   end
 
   def deal_params

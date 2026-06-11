@@ -1,0 +1,16 @@
+Hi <%= @user.display_name %>,
+
+A new deal matching your acquisition mandate just hit the AcquireTMT network:
+
+<%= @deal.title %>
+<%= @deal.industry_name %> · <%= @deal.location %> · <%= @deal.reference %>
+
+Revenue: <%= number_to_currency(@deal.revenue, precision: 0) %>
+EBITDA: <%= number_to_currency(@deal.ebitda, precision: 0) %>
+Asking price: <%= number_to_currency(@deal.asking_price, precision: 0) %>
+
+<%= @deal.teaser %>
+
+View the deal: <%= deal_url(@deal) %>
+
+— The AcquireTMT team

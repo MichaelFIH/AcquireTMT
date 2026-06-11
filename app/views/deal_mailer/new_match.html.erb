@@ -1,0 +1,18 @@
+<p>Hi <%= @user.display_name %>,</p>
+
+<p>A new deal matching your acquisition mandate just hit the AcquireTMT network:</p>
+
+<h2><%= @deal.title %></h2>
+<p><strong><%= @deal.industry_name %></strong> · <%= @deal.location %> · <%= @deal.reference %></p>
+
+<ul>
+  <li>Revenue: <%= number_to_currency(@deal.revenue, precision: 0) %></li>
+  <li>EBITDA: <%= number_to_currency(@deal.ebitda, precision: 0) %></li>
+  <li>Asking price: <%= number_to_currency(@deal.asking_price, precision: 0) %></li>
+</ul>
+
+<p><%= @deal.teaser %></p>
+
+<p><%= link_to "View the deal", deal_url(@deal) %></p>
+
+<p>— The AcquireTMT team</p>

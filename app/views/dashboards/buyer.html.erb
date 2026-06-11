@@ -64,6 +64,9 @@
         <h2 class="font-serif text-3xl font-medium text-brand-900">Your deal feed</h2>
         <p class="text-sm text-slate-500"><%= pluralize(@deals.size, "deal") %></p>
       </div>
+      <% if @user.mandate_set? %>
+        <p class="mt-1 text-sm text-slate-500">We'll email you the moment a new deal matches your mandate.</p>
+      <% end %>
 
       <% unless @user.mandate_set? %>
         <p class="mt-4 rounded-sm border border-brand-100 bg-white px-5 py-4 text-sm text-slate-600">
