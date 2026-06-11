@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     get "buyers", to: "pages#buyers"
     get "insights", to: "pages#insights"
     get "about", to: "pages#about"
+    get "careers", to: "pages#careers"
     get "contact", to: "pages#contact"
 
     get "tools/find-buyers", to: "tools#find_buyers"

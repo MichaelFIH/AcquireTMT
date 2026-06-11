@@ -1,0 +1,111 @@
+<% content_for :title, "Careers — AcquireTMT" %>
+<%
+  values = [
+    ["AI first", "We treat AI as core to our identity, not a bolt-on. Everyone here considers how it can augment human judgment."],
+    ["First-principles thinking", "We strip problems to their fundamentals and build up, creating paths others think impossible."],
+    ["Driven by data", "We spark ideas with intuition, then let the numbers decide. Metrics guide every bet."],
+    ["Relentless focus", "Our edge is intense focus on the few things that truly matter — done extraordinarily well."]
+  ]
+  benefits = [
+    ["shield-plus", "Private medical & dental insurance"],
+    ["palmtree", "Unlimited PTO"],
+    ["coffee", "Free lunch, snacks and coffee"],
+    ["dumbbell", "Gym membership"],
+    ["map-pin", "Relocation allowance"]
+  ]
+  roles = {
+    "Engineering" => [["Full-Stack Engineer", "Remote / NYC", "$180K – $260K"], ["AI Engineer", "Remote / NYC", "$200K – $300K"]],
+    "M&A" => [["Investment Banker II", "New York, NY", "$250K – $500K"], ["Deal Associate", "Remote / NYC", "$140K – $220K"]]
+  }
+%>
+
+<!-- HERO -->
+<section class="bg-brand-50 py-24 sm:py-28">
+  <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+    <h1 class="font-serif text-5xl font-medium leading-tight text-brand-900 sm:text-6xl">
+      Join the future of TMT investment banking
+    </h1>
+    <p class="mt-5 text-lg leading-8 text-slate-600">
+      Help us modernize dealmaking and help technology, media and telecom owners thrive.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="#open-roles" class="rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500">View open roles</a>
+      <%= link_to "About us", about_path, class: "rounded-sm border border-brand-100 bg-white px-6 py-3 text-sm font-bold text-brand-900 transition hover:bg-brand-50" %>
+    </div>
+    <div class="mt-12 overflow-hidden rounded-sm border border-brand-100 bg-white">
+      <div class="flex h-72 items-center justify-center text-sm text-slate-400">Team photo</div>
+    </div>
+  </div>
+</section>
+
+<!-- AS FEATURED IN -->
+<section class="border-y border-brand-100 bg-white py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">As featured in</p>
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
+      <% ["Forbes", "TechCrunch", "Business Insider", "Yahoo Finance"].each do |name| %>
+        <span class="text-lg font-bold text-slate-400"><%= name %></span>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- OUR VALUES -->
+<section class="bg-brand-50 py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="font-serif text-4xl font-medium text-brand-900">Our values</h2>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2">
+      <% values.each_with_index do |(title, body), i| %>
+        <div class="rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+          <p class="font-serif text-3xl font-medium text-brand-300"><%= format("%02d", i + 1) %></p>
+          <h3 class="mt-4 font-serif text-2xl font-medium text-brand-900"><%= title %></h3>
+          <p class="mt-2 text-sm leading-7 text-slate-600"><%= body %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="bg-white py-20 sm:py-24">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <h2 class="font-serif text-4xl font-medium text-brand-900">Benefits</h2>
+    <p class="mt-2 text-base text-slate-600">We clear the day-to-day clutter so you can focus on driving outcomes.</p>
+    <div class="mt-8 divide-y divide-brand-100 border-y border-brand-100">
+      <% benefits.each do |icon, label| %>
+        <div class="flex items-center gap-4 py-4">
+          <%= lucide_icon icon, class: "h-5 w-5 text-brand-500" %>
+          <span class="text-base font-semibold text-brand-900"><%= label %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN ROLES -->
+<section id="open-roles" class="bg-brand-50 py-20 sm:py-24">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <h2 class="font-serif text-4xl font-medium text-brand-900">Open roles at AcquireTMT</h2>
+    <div class="mt-10 space-y-10">
+      <% roles.each do |department, listings| %>
+        <div>
+          <h3 class="text-sm font-bold uppercase tracking-[0.2em] text-slate-400"><%= department %></h3>
+          <div class="mt-4 divide-y divide-brand-100 border-y border-brand-100">
+            <% listings.each do |title, location, pay| %>
+              <%= link_to contact_path, class: "flex items-center justify-between gap-4 py-5 transition hover:bg-white" do %>
+                <div>
+                  <p class="font-serif text-xl font-medium text-brand-900"><%= title %></p>
+                  <p class="mt-1 text-sm text-slate-500"><%= location %></p>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="hidden text-sm text-slate-500 sm:inline"><%= pay %></span>
+                  <%= lucide_icon "arrow-up-right", class: "h-5 w-5 text-brand-500" %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

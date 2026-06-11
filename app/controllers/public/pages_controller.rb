@@ -14,6 +14,9 @@ class Public::PagesController < ApplicationController
   def about
   end
 
+  def careers
+  end
+
   def contact
   end
 end
