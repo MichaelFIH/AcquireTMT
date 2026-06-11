@@ -1,4 +1,5 @@
 <% content_for :title, "Buyer dashboard" %>
+<% revenue_options = [["No min", nil], ["$500K", 500_000], ["$1M", 1_000_000], ["$3M", 3_000_000], ["$5M", 5_000_000], ["$10M", 10_000_000], ["$25M", 25_000_000]] %>
 
 <section class="min-h-screen bg-brand-50 py-12">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -11,10 +12,71 @@
         class: "w-fit rounded-sm border border-brand-100 bg-white px-4 py-2 text-sm font-bold text-brand-900 hover:bg-brand-50" %>
     </div>
 
+    <% if notice.present? %>
+      <p class="mt-6 rounded-sm border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"><%= notice %></p>
+    <% end %>
+
+    <!-- Acquisition mandate -->
     <div class="mt-8 rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
-      <h2 class="font-serif text-2xl font-medium text-brand-900">Your curated deal feed</h2>
-      <p class="mt-1 text-sm text-slate-600">TMT businesses for sale matched to your acquisition mandate.</p>
-      <p class="mt-6 text-sm text-slate-400">Deals matching your mandate will appear here.</p>
+      <h2 class="font-serif text-2xl font-medium text-brand-900">Your acquisition mandate</h2>
+      <p class="mt-1 text-sm text-slate-600">Tell us what you're looking for and we'll curate the deal feed below.</p>
+
+      <%= form_with model: @user, url: buyer_mandate_path, method: :patch do |f| %>
+        <p class="mt-6 text-sm font-semibold text-brand-900">Sectors of interest</p>
+        <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+          <% ValuationData::SECTORS.each do |slug, sector| %>
+            <label class="cursor-pointer rounded-sm border border-brand-100 px-3 py-2.5 text-sm font-semibold text-brand-900 transition hover:border-brand-300 has-[:checked]:border-brand-300 has-[:checked]:bg-brand-50">
+              <%= check_box_tag "user[mandate_industries][]", slug, @user.mandate_industries.include?(slug), class: "sr-only" %>
+              <%= sector["name"] %>
+            </label>
+          <% end %>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <div>
+            <%= f.label :mandate_min_revenue, "Min revenue", class: "block text-sm font-semibold text-brand-900" %>
+            <%= f.select :mandate_min_revenue, options_for_select(revenue_options, @user.mandate_min_revenue),
+              {}, class: "mt-1 w-full rounded-sm border border-brand-100 px-4 py-2.5 text-sm text-brand-900" %>
+          </div>
+          <div>
+            <%= f.label :mandate_max_revenue, "Max revenue", class: "block text-sm font-semibold text-brand-900" %>
+            <%= f.select :mandate_max_revenue, options_for_select([["No max", nil]] + revenue_options[1..], @user.mandate_max_revenue),
+              {}, class: "mt-1 w-full rounded-sm border border-brand-100 px-4 py-2.5 text-sm text-brand-900" %>
+          </div>
+          <div>
+            <%= f.label :mandate_location, "Geography (optional)", class: "block text-sm font-semibold text-brand-900" %>
+            <%= f.text_field :mandate_location, placeholder: "e.g. US, Remote",
+              class: "mt-1 w-full rounded-sm border border-brand-100 px-4 py-2.5 text-sm text-brand-900" %>
+          </div>
+        </div>
+
+        <%= f.submit "Save mandate",
+          class: "mt-6 cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
+      <% end %>
+    </div>
+
+    <!-- Curated deal feed -->
+    <div class="mt-8">
+      <div class="flex items-end justify-between">
+        <h2 class="font-serif text-3xl font-medium text-brand-900">Your deal feed</h2>
+        <p class="text-sm text-slate-500"><%= pluralize(@deals.size, "deal") %></p>
+      </div>
+
+      <% unless @user.mandate_set? %>
+        <p class="mt-4 rounded-sm border border-brand-100 bg-white px-5 py-4 text-sm text-slate-600">
+          Set your sectors above to curate this feed. Showing all active deals for now.
+        </p>
+      <% end %>
+
+      <% if @deals.any? %>
+        <div class="mt-6 grid gap-5 lg:grid-cols-2">
+          <%= render partial: "deals/card", collection: @deals, as: :deal %>
+        </div>
+      <% else %>
+        <p class="mt-6 rounded-sm border border-brand-100 bg-white px-5 py-8 text-center text-sm text-slate-400">
+          No active deals match your mandate yet — we'll alert you when one does.
+        </p>
+      <% end %>
     </div>
   </div>
 </section>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_11_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_11_150001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_11_140000) do
     t.datetime "updated_at", null: false
     t.index ["industry", "name"], name: "index_comps_on_industry_and_name", unique: true
     t.index ["industry"], name: "index_comps_on_industry"
+  end
+
+  create_table "deals", force: :cascade do |t|
+    t.string "reference", null: false
+    t.string "title", null: false
+    t.string "industry", null: false
+    t.bigint "revenue"
+    t.bigint "ebitda"
+    t.bigint "asking_price"
+    t.string "location"
+    t.text "teaser"
+    t.string "highlights", default: [], null: false, array: true
+    t.boolean "recurring", default: false, null: false
+    t.string "status", default: "active", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["industry"], name: "index_deals_on_industry"
+    t.index ["reference"], name: "index_deals_on_reference", unique: true
+    t.index ["status"], name: "index_deals_on_status"
   end
 
   create_table "leads", force: :cascade do |t|
@@ -104,6 +123,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_11_140000) do
     t.string "role", default: "seller", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "mandate_industries", default: [], null: false, array: true
+    t.bigint "mandate_min_revenue"
+    t.bigint "mandate_max_revenue"
+    t.string "mandate_location"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

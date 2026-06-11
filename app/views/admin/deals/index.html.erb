@@ -1,0 +1,47 @@
+<section class="bg-slate-50 py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-extrabold text-brand-900">Deals</h1>
+        <p class="mt-2 text-slate-600">Listings shown to buyers in their curated feed.</p>
+      </div>
+      <%= link_to "New deal", new_admin_deal_path, class: "rounded-lg bg-brand-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-black" %>
+    </div>
+
+    <% if notice.present? %>
+      <p class="mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"><%= notice %></p>
+    <% end %>
+
+    <div class="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <% ["Ref", "Title", "Industry", "Revenue", "Asking", "Status", ""].each do |h| %>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500"><%= h %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <% @deals.each do |deal| %>
+              <tr>
+                <td class="px-6 py-4 text-sm text-slate-500"><%= deal.reference %></td>
+                <td class="px-6 py-4 text-sm font-semibold text-brand-900"><%= deal.title %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= deal.industry_name %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= number_to_currency(deal.revenue, precision: 0) %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= number_to_currency(deal.asking_price, precision: 0) %></td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= deal.status_label %></td>
+                <td class="px-6 py-4 text-right text-sm">
+                  <%= link_to "Edit", edit_admin_deal_path(deal), class: "font-bold text-brand-700" %>
+                  <%= button_to "Delete", admin_deal_path(deal), method: :delete,
+                    form: { class: "inline", data: { turbo_confirm: "Remove this deal?" } },
+                    class: "ml-3 cursor-pointer text-red-600 hover:underline" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

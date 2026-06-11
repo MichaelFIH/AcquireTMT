@@ -19,4 +19,9 @@ class User < ApplicationRecord
   def display_name
     name.presence || email_address.split("@").first
   end
+
+  # A buyer has set their acquisition criteria once they've picked a sector.
+  def mandate_set?
+    mandate_industries.present?
+  end
 end

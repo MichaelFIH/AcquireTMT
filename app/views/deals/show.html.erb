@@ -1,0 +1,53 @@
+<% content_for :title, @deal.title %>
+
+<section class="min-h-screen bg-brand-50 py-12">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <%= link_to "← Back to dashboard", dashboard_path, class: "text-sm font-bold text-brand-700" %>
+
+    <% if notice.present? %>
+      <p class="mt-4 rounded-sm border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"><%= notice %></p>
+    <% end %>
+
+    <div class="mt-6 rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
+      <div class="flex items-center justify-between gap-3">
+        <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-900"><%= @deal.industry_name %></span>
+        <span class="text-xs font-semibold uppercase tracking-wide text-slate-400"><%= @deal.status_label %> · <%= @deal.reference %></span>
+      </div>
+
+      <h1 class="mt-4 font-serif text-4xl font-medium text-brand-900"><%= @deal.title %></h1>
+      <p class="mt-1 text-sm text-slate-500"><%= @deal.location %></p>
+      <p class="mt-4 text-base leading-7 text-slate-700"><%= @deal.teaser %></p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <% [["Revenue", @deal.revenue], ["EBITDA", @deal.ebitda], ["Asking price", @deal.asking_price]].each do |label, value| %>
+          <div class="rounded-sm border border-brand-100 bg-brand-50 p-5 text-center">
+            <p class="text-xs text-slate-500"><%= label %></p>
+            <p class="mt-2 font-serif text-2xl font-medium text-brand-900"><%= number_to_currency(value, precision: 0) %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @deal.highlights.any? %>
+        <div class="mt-8">
+          <h2 class="text-lg font-bold text-brand-900">Highlights</h2>
+          <ul class="mt-3 space-y-2">
+            <% @deal.highlights.each do |highlight| %>
+              <li class="flex gap-3 text-sm text-slate-700">
+                <span class="text-brand-300">✓</span><%= highlight %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mt-8 rounded-sm bg-brand-900 p-7 text-white">
+        <h3 class="font-serif text-2xl font-medium">Want the full picture?</h3>
+        <p class="mt-2 text-sm leading-6 text-white/70">
+          Request access to the data room — full financials, the banker-authored CIM, and a call with the deal team.
+        </p>
+        <%= button_to "Request access", request_access_deal_path(@deal), method: :post,
+          class: "mt-5 cursor-pointer rounded-sm bg-brand-300 px-6 py-3 text-sm font-bold text-brand-900 transition hover:bg-white" %>
+      </div>
+    </div>
+  </div>
+</section>

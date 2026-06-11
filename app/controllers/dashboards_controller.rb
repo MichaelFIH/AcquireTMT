@@ -4,7 +4,12 @@ class DashboardsController < ApplicationController
   # Single entry point that renders the buyer or seller dashboard by role.
   def show
     @user = Current.user
-    @tool_runs = @user.tool_runs.where(status: "complete").order(created_at: :desc) if @user.seller?
-    render @user.buyer? ? :buyer : :seller
+    if @user.buyer?
+      @deals = Deal.for_buyer(@user)
+      render :buyer
+    else
+      @tool_runs = @user.tool_runs.where(status: "complete").order(created_at: :desc)
+      render :seller
+    end
   end
 end

@@ -1,6 +1,9 @@
 <section class="bg-slate-50 py-10">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-extrabold text-brand-900">Leads</h1>
+    <div class="flex items-center justify-between">
+      <h1 class="text-3xl font-extrabold text-brand-900">Leads</h1>
+      <%= link_to "Manage deals →", admin_deals_path, class: "text-sm font-bold text-brand-700 hover:underline" %>
+    </div>
     <p class="mt-2 text-slate-600">View all BuyerMap, valuation, and market comps submissions.</p>
 
     <div class="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">

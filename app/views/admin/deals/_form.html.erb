@@ -1,0 +1,64 @@
+<% input = "mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-brand-900" %>
+
+<%= form_with model: [:admin, @deal] do |f| %>
+  <% if @deal.errors.any? %>
+    <div class="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+      <%= @deal.errors.full_messages.to_sentence %>
+    </div>
+  <% end %>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <%= f.label :reference, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :reference, class: input %>
+    </div>
+    <div>
+      <%= f.label :title, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :title, class: input %>
+    </div>
+    <div>
+      <%= f.label :industry, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.select :industry, ValuationData::SECTORS.map { |slug, s| [s["name"], slug] }, {}, class: input %>
+    </div>
+    <div>
+      <%= f.label :status, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.select :status, Deal::STATUSES.map { |s| [s.tr("_", " ").capitalize, s] }, {}, class: input %>
+    </div>
+    <div>
+      <%= f.label :revenue, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :revenue, class: input %>
+    </div>
+    <div>
+      <%= f.label :ebitda, "EBITDA", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :ebitda, class: input %>
+    </div>
+    <div>
+      <%= f.label :asking_price, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :asking_price, class: input %>
+    </div>
+    <div>
+      <%= f.label :location, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :location, class: input %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <%= f.label :teaser, class: "block text-sm font-bold text-slate-700" %>
+    <%= f.text_area :teaser, rows: 3, class: input %>
+  </div>
+
+  <div class="mt-5">
+    <%= label_tag "deal[highlights_text]", "Highlights (one per line)", class: "block text-sm font-bold text-slate-700" %>
+    <%= text_area_tag "deal[highlights_text]", @deal.highlights.join("\n"), rows: 4, class: input %>
+  </div>
+
+  <label class="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700">
+    <%= f.check_box :recurring %>
+    Recurring-revenue business
+  </label>
+
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.submit "Save deal", class: "cursor-pointer rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-black" %>
+    <%= link_to "Cancel", admin_deals_path, class: "text-sm font-bold text-slate-500 hover:text-slate-700" %>
+  </div>
+<% end %>

@@ -198,3 +198,54 @@ Buyer.delete_all
 BUYERS.each { |attrs| Buyer.create!(attrs) }
 
 puts "Seeded #{Buyer.count} active acquirers."
+
+# --- Sample deal listings (buyer deal feed) ----------------------------------
+# Anonymized TMT businesses for sale. Idempotent.
+
+DEALS = [
+  { reference: "TMT-001", title: "Profitable Vertical SaaS for Dental Practices", industry: "saas",
+    revenue: 2_400_000, ebitda: 720_000, asking_price: 9_500_000, location: "US — Remote", recurring: true,
+    teaser: "Founder-led vertical SaaS serving dental practices with sticky, mission-critical workflows.",
+    highlights: ["92% gross retention", "85% recurring revenue", "Lean, profitable team"] },
+  { reference: "TMT-002", title: "Regional Managed IT Services Provider", industry: "msp-it-services",
+    revenue: 6_000_000, ebitda: 1_200_000, asking_price: 7_800_000, location: "Midwest US", recurring: true,
+    teaser: "Established MSP with a dense base of contracted SMB clients and strong recurring revenue.",
+    highlights: ["140+ contracted clients", "78% revenue under MRR", "Experienced technician bench"] },
+  { reference: "TMT-003", title: "MSSP with 24/7 Security Operations Center", industry: "cybersecurity",
+    revenue: 4_200_000, ebitda: 900_000, asking_price: 6_300_000, location: "US — Remote", recurring: true,
+    teaser: "Managed security provider with an in-house SOC and compliance services for mid-market clients.",
+    highlights: ["90%+ recurring revenue", "SOC2 + compliance offering", "Enterprise customer logos"] },
+  { reference: "TMT-004", title: "Niche Content & Newsletter Network", industry: "digital-media",
+    revenue: 1_100_000, ebitda: 620_000, asking_price: 2_400_000, location: "Remote", recurring: false,
+    teaser: "Audience-driven content network with a large engaged newsletter list and diversified monetization.",
+    highlights: ["480K newsletter subscribers", "Ad + affiliate + subscription mix", "60%+ margins"] },
+  { reference: "TMT-005", title: "Regional Fiber & Connectivity Operator", industry: "telecom-connectivity",
+    revenue: 9_000_000, ebitda: 2_700_000, asking_price: 22_000_000, location: "Southeast US", recurring: true,
+    teaser: "Connectivity operator with owned fiber assets and a recurring residential + enterprise subscriber base.",
+    highlights: ["Owned fiber infrastructure", "Recurring subscriber revenue", "Clear expansion runway"] },
+  { reference: "TMT-006", title: "AI-Enabled Analytics SaaS", industry: "data-analytics-ai",
+    revenue: 3_500_000, ebitda: 700_000, asking_price: 11_000_000, location: "US / EU — Remote", recurring: true,
+    teaser: "Analytics platform with a proprietary data asset and strong expansion within enterprise accounts.",
+    highlights: ["Proprietary data moat", "120% net revenue retention", "Enterprise sales pipeline"] },
+  { reference: "TMT-007", title: "Managed Cloud & DevOps Platform", industry: "cloud-infrastructure",
+    revenue: 5_500_000, ebitda: 1_100_000, asking_price: 9_000_000, location: "Remote", recurring: true,
+    teaser: "Managed cloud and DevOps services business with multi-year contracts and sticky platform revenue.",
+    highlights: ["Multi-year contracts", "AWS & Azure partner status", "High net revenue retention"] },
+  { reference: "TMT-008", title: "Performance Marketing SaaS", industry: "adtech-martech",
+    revenue: 2_000_000, ebitda: 520_000, asking_price: 3_200_000, location: "Remote", recurring: true,
+    teaser: "MarTech platform blending self-serve subscriptions with managed performance campaigns.",
+    highlights: ["Self-serve + managed revenue", "Recurring subscriptions", "Strong unit economics"] },
+  { reference: "TMT-009", title: "Bootstrapped B2B Workflow SaaS", industry: "saas",
+    revenue: 750_000, ebitda: 300_000, asking_price: 2_600_000, location: "Remote", recurring: true,
+    teaser: "Profitable bootstrapped B2B SaaS with low churn; owner looking to transition out.",
+    highlights: ["~70% margins", "Low monthly churn", "Clean, documented codebase"] },
+  { reference: "TMT-010", title: "Cybersecurity-Focused MSP Platform", industry: "msp-it-services",
+    revenue: 14_000_000, ebitda: 3_200_000, asking_price: 32_000_000, location: "National US", recurring: true,
+    teaser: "Scaled MSP with embedded security services — a platform-ready asset for a roll-up.",
+    highlights: ["Embedded MDR/EDR security", "90%+ recurring revenue", "PE platform-ready"] }
+].freeze
+
+Deal.delete_all
+DEALS.each { |attrs| Deal.create!(attrs) }
+
+puts "Seeded #{Deal.count} deal listings."

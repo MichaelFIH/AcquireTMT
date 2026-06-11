@@ -5,8 +5,13 @@ Rails.application.routes.draw do
   # Accounts & dashboards (buyer + seller portals)
   get  "sign_up", to: "registrations#new",  as: :sign_up
   post "sign_up", to: "registrations#create"
-  get  "sign_in", to: "sessions#new",       as: :sign_in
-  get  "dashboard", to: "dashboards#show",   as: :dashboard
+  get   "sign_in", to: "sessions#new",      as: :sign_in
+  get   "dashboard", to: "dashboards#show", as: :dashboard
+  patch "dashboard/mandate", to: "buyer_mandates#update", as: :buyer_mandate
+
+  resources :deals, only: %i[show] do
+    post :request_access, on: :member
+  end
 
   root "public/pages#home"
 
@@ -32,5 +37,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :leads, only: [:index, :show, :update]
+    resources :deals
   end
 end
