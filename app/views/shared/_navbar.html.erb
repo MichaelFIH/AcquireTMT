@@ -48,15 +48,17 @@
         <% nav_menus.each do |menu| %>
           <% active = menu_active.call(menu) %>
           <% if menu[:items] %>
-            <div class="group relative">
-              <button type="button"
+            <div class="group relative" data-controller="dropdown"
+              data-action="mouseenter->dropdown#open mouseleave->dropdown#close">
+              <button type="button" data-action="dropdown#toggle" aria-haspopup="true"
                 class="flex items-center gap-1.5 rounded-sm px-3 py-2 text-sm font-semibold transition <%= active ? "text-brand-300" : "text-white/80 hover:text-white" %>">
                 <%= menu[:label] %>
-                <%= lucide_icon "chevron-down", class: "h-3.5 w-3.5 text-current opacity-70 transition duration-200 group-hover:rotate-180" %>
+                <%= lucide_icon "chevron-down", class: "h-3.5 w-3.5 text-current opacity-70 transition duration-200 group-[.is-open]:rotate-180" %>
               </button>
 
-              <div class="invisible absolute left-0 top-full <%= panel_width[menu[:variant]] %> translate-y-1 pt-3 opacity-0 transition duration-150 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                <div class="rounded-sm bg-white p-2 shadow-xl ring-1 ring-black/5">
+              <div data-dropdown-target="menu"
+                class="absolute left-0 top-full hidden <%= panel_width[menu[:variant]] %> pt-3">
+                <div class="animate-fade-up rounded-sm bg-white p-2 shadow-xl ring-1 ring-black/5">
                   <% if menu[:variant] == "grid" %>
                     <div class="grid grid-cols-2 gap-1">
                       <% menu[:items].each do |label, path, icon| %>
