@@ -9,6 +9,7 @@ class DashboardsController < ApplicationController
       render :buyer
     else
       @tool_runs = @user.tool_runs.where(status: "complete").order(created_at: :desc)
+      @advisor_lead = @user.leads.order(created_at: :desc).first
       render :seller
     end
   end

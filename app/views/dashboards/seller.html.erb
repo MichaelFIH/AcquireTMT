@@ -14,6 +14,34 @@
       </div>
     </div>
 
+    <!-- Advisor status -->
+    <div class="mt-8 rounded-sm border border-brand-100 bg-white p-6 shadow-soft">
+      <% if @advisor_lead %>
+        <% stages = Lead.statuses.keys %>
+        <% current_index = stages.index(@advisor_lead.status) || 0 %>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">Advisor</p>
+            <p class="mt-1 font-serif text-2xl font-medium text-brand-900"><%= @advisor_lead.status_label %></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <% stages.each_with_index do |_stage, i| %>
+              <span class="h-2 w-10 rounded-full <%= i <= current_index ? "bg-brand-300" : "bg-slate-200" %>"></span>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">Advisor</p>
+            <p class="mt-1 text-sm text-slate-600">Ready to sell? Talk to an AcquireTMT advisor about your business.</p>
+          </div>
+          <%= link_to "Talk to an advisor", contact_path,
+            class: "w-fit rounded-sm bg-brand-900 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-500" %>
+        </div>
+      <% end %>
+    </div>
+
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
       <% [
         ["Business Valuation", "Get an instant TMT valuation range.", tools_valuation_path, "trending-up"],

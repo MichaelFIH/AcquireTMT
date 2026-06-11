@@ -2,6 +2,8 @@ class Public::LeadsController < ApplicationController
   def create
     @lead = Lead.new(lead_params)
     @lead.status ||= "new_lead"
+    resume_session # public controller; attach the lead to a logged-in seller
+    @lead.user = Current.user if Current.user
 
     if @lead.save
       attach_tool_runs(@lead)
