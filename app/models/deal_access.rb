@@ -15,4 +15,13 @@ class DealAccess < ApplicationRecord
   def approved?
     status == "approved"
   end
+
+  def nda_signed?
+    nda_signed_at.present?
+  end
+
+  # The data room opens only once access is approved AND the NDA is signed.
+  def unlocked?
+    approved? && nda_signed?
+  end
 end

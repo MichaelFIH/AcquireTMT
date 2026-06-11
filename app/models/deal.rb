@@ -4,6 +4,7 @@ class Deal < ApplicationRecord
   STATUSES = %w[active under_offer sold].freeze
 
   has_many :deal_accesses, dependent: :destroy
+  has_many :deal_documents, dependent: :destroy
 
   validates :reference, :title, :industry, presence: true
   validates :reference, uniqueness: true

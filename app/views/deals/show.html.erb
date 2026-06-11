@@ -40,25 +40,53 @@
         </div>
       <% end %>
 
-      <% if @access&.approved? %>
-        <!-- Unlocked data room -->
+      <% if @access&.unlocked? %>
+        <!-- Unlocked data room with real documents -->
         <div class="mt-8 rounded-sm border border-brand-100 bg-white p-7">
           <div class="flex items-center gap-2">
             <%= lucide_icon "lock-open", class: "h-5 w-5 text-brand-500" %>
             <h3 class="font-serif text-2xl font-medium text-brand-900">Data room</h3>
           </div>
-          <p class="mt-1 text-sm text-slate-600">Access granted. Your deal materials:</p>
-          <div class="mt-5 divide-y divide-brand-100 border-y border-brand-100">
-            <% ["Historical financials & tax returns", "Confidential Information Memorandum (CIM)", "Customer & revenue breakdown", "Secure data room"].each do |doc| %>
-              <div class="flex items-center justify-between py-3">
-                <span class="flex items-center gap-3 text-sm text-slate-700">
-                  <%= lucide_icon "file-text", class: "h-4 w-4 text-brand-500" %><%= doc %>
-                </span>
-                <span class="text-sm font-semibold text-brand-500">Available</span>
-              </div>
-            <% end %>
+          <p class="mt-1 text-sm text-slate-600">Access granted. Download the deal materials below.</p>
+          <% if @deal.deal_documents.any? %>
+            <div class="mt-5 divide-y divide-brand-100 border-y border-brand-100">
+              <% @deal.deal_documents.each do |doc| %>
+                <div class="flex items-center justify-between gap-4 py-3">
+                  <span class="flex items-center gap-3 text-sm text-slate-700">
+                    <%= lucide_icon "file-text", class: "h-4 w-4 text-brand-500" %><%= doc.title %>
+                  </span>
+                  <%= link_to "Download", rails_blob_path(doc.file, disposition: "attachment"),
+                    class: "text-sm font-semibold text-brand-500 hover:underline" %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="mt-5 rounded-sm bg-brand-50 px-4 py-6 text-center text-sm text-slate-500">Documents are being prepared — the deal team will add them shortly.</p>
+          <% end %>
+          <p class="mt-4 text-xs text-slate-400">Confidential. NDA signed <%= @access.nda_signed_at.strftime("%d %b %Y") %>.</p>
+        </div>
+      <% elsif @access&.approved? %>
+        <!-- Approved, awaiting NDA signature -->
+        <div class="mt-8 rounded-sm border border-brand-100 bg-white p-7">
+          <div class="flex items-center gap-2">
+            <%= lucide_icon "file-signature", class: "h-5 w-5 text-brand-500" %>
+            <h3 class="font-serif text-2xl font-medium text-brand-900">Sign the NDA to open the data room</h3>
           </div>
-          <p class="mt-4 text-xs text-slate-400">Materials are shared by the deal team — they'll reach out to coordinate the data room.</p>
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Your access is approved. The information in this data room is confidential. By signing, you agree to keep
+            all deal materials confidential, use them solely to evaluate a potential acquisition, and not contact the
+            company or its employees directly except through AcquireTMT.
+          </p>
+          <%= form_with url: sign_nda_deal_path(@deal), method: :post, class: "mt-5", data: { controller: "nda" } do %>
+            <label class="flex items-start gap-3 text-sm text-slate-700">
+              <input type="checkbox" required data-action="nda#toggle" data-nda-target="agree" class="mt-1">
+              I have read and agree to the non-disclosure agreement.
+            </label>
+            <button type="submit" data-nda-target="submit" disabled
+              class="mt-5 cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-40">
+              Sign NDA & open data room
+            </button>
+          <% end %>
         </div>
       <% elsif @access&.status == "requested" %>
         <div class="mt-8 rounded-sm border border-brand-100 bg-brand-50 p-7 text-center">

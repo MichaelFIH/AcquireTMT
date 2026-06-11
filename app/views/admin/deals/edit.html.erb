@@ -5,5 +5,38 @@
     <div class="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
       <%= render "form" %>
     </div>
+
+    <!-- Data room documents -->
+    <div class="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+      <h2 class="text-xl font-extrabold text-brand-900">Data room documents</h2>
+      <p class="mt-1 text-sm text-slate-500">Shown to buyers who have approved access and have signed the NDA.</p>
+
+      <% if @deal.deal_documents.any? %>
+        <div class="mt-5 divide-y divide-slate-200 border-y border-slate-200">
+          <% @deal.deal_documents.order(:created_at).each do |doc| %>
+            <div class="flex items-center justify-between gap-4 py-3 text-sm">
+              <span class="font-semibold text-brand-900"><%= doc.title %></span>
+              <span class="flex items-center gap-4">
+                <% if doc.file.attached? %><%= link_to doc.file.filename, rails_blob_path(doc.file, disposition: "attachment"), class: "text-slate-500 hover:underline" %><% end %>
+                <%= button_to "Remove", admin_deal_document_path(@deal, doc), method: :delete,
+                  form: { class: "inline", data: { turbo_confirm: "Remove this document?" } }, class: "cursor-pointer text-red-600 hover:underline" %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= form_with url: admin_deal_documents_path(@deal), scope: :deal_document, method: :post do |f| %>
+        <div class="mt-5 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+          <div>
+            <%= f.label :title, "Document title", class: "block text-sm font-bold text-slate-700" %>
+            <%= f.text_field :title, placeholder: "e.g. Confidential Information Memorandum",
+              class: "mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-brand-900" %>
+          </div>
+          <%= f.file_field :file, class: "text-sm" %>
+        </div>
+        <%= f.submit "Add document", class: "mt-4 cursor-pointer rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-black" %>
+      <% end %>
+    </div>
   </div>
 </section>

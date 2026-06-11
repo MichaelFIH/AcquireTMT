@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get "my-deals", to: "deals#mine", as: :my_deals
   resources :deals, only: %i[show] do
     post :request_access, on: :member
+    post :sign_nda, on: :member
   end
 
   root "public/pages#home"
@@ -49,7 +50,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :leads, only: [:index, :show, :update]
-    resources :deals
+    resources :deals do
+      resources :documents, only: [:create, :destroy], controller: "deal_documents"
+    end
     resources :deal_accesses, only: [:index] do
       member do
         patch :approve
