@@ -21,6 +21,10 @@ export default class extends Controller {
     "previewIntro",
     "previewProducts",
     "previewMarkets",
+    "previewSummary",
+    "previewWebsite",
+    "previewProductTags",
+    "previewMarketTags",
     "sectorLabel",
     "listingsCount",
     "combinedValue",
@@ -165,6 +169,7 @@ export default class extends Controller {
     try {
       this.compsData = await requestPromise
       this.requestSettled = true
+      this.populatePreview(this.compsData.analysis, website)
     } catch (error) {
       this.requestSettled = true
       clearInterval(interval)
@@ -284,6 +289,26 @@ export default class extends Controller {
   setText(name, value) {
     const cap = name.charAt(0).toUpperCase() + name.slice(1)
     if (this[`has${cap}Target`]) this[`${name}Target`].textContent = value
+  }
+
+  populatePreview(analysis, website) {
+    const a = analysis || {}
+    if (this.hasPreviewWebsiteTarget && website) this.previewWebsiteTarget.textContent = website.replace(/^https?:\/\//, "")
+    if (this.hasPreviewSummaryTarget && a.summary) this.previewSummaryTarget.textContent = a.summary
+    if (this.hasPreviewProductTagsTarget) this.renderTagGrid(this.previewProductTagsTarget, a.products_services)
+    if (this.hasPreviewMarketTagsTarget) this.renderTagGrid(this.previewMarketTagsTarget, a.end_markets)
+  }
+
+  renderTagGrid(container, tags) {
+    const list = (tags || []).filter(Boolean)
+    if (!list.length) return
+    container.innerHTML = ""
+    list.forEach((tag) => {
+      const span = document.createElement("span")
+      span.className = "rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"
+      span.textContent = tag
+      container.appendChild(span)
+    })
   }
 
   showError(message) {

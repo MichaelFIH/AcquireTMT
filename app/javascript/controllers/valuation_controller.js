@@ -33,6 +33,10 @@ export default class extends Controller {
     "valuationMethod",
     "sizeBand",
     "asOf",
+    "previewSummary",
+    "previewWebsite",
+    "previewProducts",
+    "previewMarkets",
     "signalsList",
     "rowBlendedRange",
     "rowBlendedNote",
@@ -180,6 +184,9 @@ this.recordAttempt()
     try {
       this.valuationData = await requestPromise
       this.requestSettled = true
+      // Fill the right-hand company preview with the real analysis while the
+      // progress bar finishes.
+      this.populatePreview(this.valuationData.analysis, website)
     } catch (error) {
       this.requestSettled = true
       clearInterval(interval)
@@ -187,6 +194,37 @@ this.recordAttempt()
       this.financialStepTarget.classList.remove("hidden")
       this.showError(error.message || "Something went wrong generating your valuation.")
     }
+  }
+
+  populatePreview(analysis, website) {
+    const a = analysis || {}
+
+    if (this.hasPreviewWebsiteTarget && website) {
+      this.previewWebsiteTarget.textContent = website.replace(/^https?:\/\//, "")
+    }
+    if (this.hasPreviewSummaryTarget && a.summary) {
+      this.previewSummaryTarget.innerHTML = ""
+      const p = document.createElement("p")
+      p.className = "text-sm leading-6 text-slate-600"
+      p.textContent = a.summary
+      this.previewSummaryTarget.appendChild(p)
+    }
+    if (this.hasPreviewProductsTarget) this.renderTagGrid(this.previewProductsTarget, a.products_services)
+    if (this.hasPreviewMarketsTarget) this.renderTagGrid(this.previewMarketsTarget, a.end_markets)
+  }
+
+  renderTagGrid(container, tags) {
+    const list = (tags || []).filter(Boolean)
+    if (!list.length) return // keep the skeleton if the analysis returned no tags
+
+    container.className = "mt-4 flex flex-wrap gap-2"
+    container.innerHTML = ""
+    list.forEach((tag) => {
+      const span = document.createElement("span")
+      span.className = "rounded-sm bg-brand-50 px-4 py-2 text-sm text-slate-600"
+      span.textContent = tag
+      container.appendChild(span)
+    })
   }
 
   async requestValuation({ website, revenue, profit, salary }) {

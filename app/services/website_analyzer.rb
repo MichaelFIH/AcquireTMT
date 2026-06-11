@@ -32,13 +32,23 @@ class WebsiteAnalyzer
         "items" => { "type" => "string" },
         "description" => "3-5 short value-driver signals (recurring revenue, niche, customer type, scale indicators)."
       },
+      "products_services" => {
+        "type" => "array",
+        "items" => { "type" => "string" },
+        "description" => "3-5 short tags for the company's main products/services (e.g. 'SMS API', 'managed cloud', 'SEO content'). 1-3 words each."
+      },
+      "end_markets" => {
+        "type" => "array",
+        "items" => { "type" => "string" },
+        "description" => "2-4 short tags for the end markets / customer types served (e.g. 'B2B', 'enterprise', 'SMB', 'healthcare'). 1-2 words each."
+      },
       "confidence" => {
         "type" => "string",
         "enum" => %w[low medium high],
         "description" => "Confidence in the classification given the available text."
       }
     },
-    "required" => %w[industry industry_name business_model summary signals confidence],
+    "required" => %w[industry industry_name business_model summary signals products_services end_markets confidence],
     "additionalProperties" => false
   }.freeze
 
@@ -133,6 +143,8 @@ class WebsiteAnalyzer
       "business_model" => "Not determined from the website.",
       "summary" => note,
       "signals" => [],
+      "products_services" => [],
+      "end_markets" => [],
       "confidence" => "low",
       "company_name" => company
     }
