@@ -6,7 +6,9 @@ class Admin::BuyersController < Admin::BaseController
   end
 
   def approve
+    was_approved = @buyer.approved?
     @buyer.update(approval_status: "approved")
+    BuyerMailer.with(user: @buyer).approved.deliver_later unless was_approved
     redirect_to admin_buyers_path, notice: "#{@buyer.email_address} approved."
   end
 

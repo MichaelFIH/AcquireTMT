@@ -43,7 +43,18 @@ env:
     # production or the admin area fails closed (Admin::BaseController).
     - ADMIN_USERNAME
     - ADMIN_PASSWORD
+    # Google sign-in
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
+    # SMTP for buyer alerts + approval emails
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
   clear:
+    # Mailer host + SMTP server (non-secret). See .env.example.
+    # APP_HOST: acquiretmt.com
+    # MAIL_FROM: AcquireTMT <no-reply@acquiretmt.com>
+    # SMTP_ADDRESS: smtp.postmarkapp.com
+    # SMTP_PORT: 587
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
