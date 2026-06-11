@@ -10,9 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_11_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_11_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "buyers", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "buyer_type", null: false
+    t.string "backed_by"
+    t.text "thesis"
+    t.string "sectors", default: [], null: false, array: true
+    t.bigint "min_revenue"
+    t.bigint "max_revenue"
+    t.integer "acquisitions_count", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.string "source"
+    t.string "source_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_type"], name: "index_buyers_on_buyer_type"
+    t.index ["sectors"], name: "index_buyers_on_sectors", using: :gin
+  end
 
   create_table "comps", force: :cascade do |t|
     t.string "industry", null: false

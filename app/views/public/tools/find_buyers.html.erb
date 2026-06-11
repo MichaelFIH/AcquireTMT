@@ -157,9 +157,15 @@
     </p>
 
     <h2 class="mt-4 max-w-4xl font-serif text-5xl font-medium leading-tight text-brand-900">
-      <span data-buyer-map-target="buyerCount">475</span> buyers are searching for a business like
+      <span data-buyer-map-target="buyerCount">12</span> active acquirers are buying businesses like
       <span data-buyer-map-target="companyName" class="text-brand-900">your business</span>
     </h2>
+
+    <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600">
+      These buyers completed
+      <span class="font-semibold text-brand-900" data-buyer-map-target="acquisitionsLastYear">—</span>
+      acquisitions in 2025. <span data-buyer-map-target="marketActivity"></span>
+    </p>
 
     <button
       type="button"
@@ -240,6 +246,18 @@
         </div>
 
       <% end %>
+    </div>
+
+    <!-- Sources -->
+    <div class="mt-8 rounded-sm border border-brand-100 bg-brand-50 p-6 text-sm leading-6 text-slate-600">
+      <p class="font-semibold text-brand-900">Where this buyer data comes from</p>
+      <p class="mt-2">
+        Active acquirers are drawn from public 2025 M&amp;A reporting (as of
+        <span data-buyer-map-target="buyerAsOf">2025</span>):
+      </p>
+      <ul class="mt-3 space-y-1.5" data-buyer-map-target="buyerSources">
+        <li class="text-slate-500">Sources load with your BuyerMap.</li>
+      </ul>
     </div>
 
     <!-- Blurred Locked Section -->

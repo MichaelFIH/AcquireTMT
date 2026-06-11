@@ -18,8 +18,12 @@ export default class extends Controller {
     "loadingTitle",
     "loadingDescription",
     "buyerCount",
+    "acquisitionsLastYear",
+    "marketActivity",
     "categories",
     "buyerCards",
+    "buyerSources",
+    "buyerAsOf",
     "attemptCounter"
   ]
 
@@ -196,6 +200,15 @@ export default class extends Controller {
     if (this.hasBuyerCountTarget && b.buyer_count != null) {
       this.buyerCountTarget.textContent = b.buyer_count
     }
+    if (this.hasAcquisitionsLastYearTarget && b.acquisitions_last_year != null) {
+      this.acquisitionsLastYearTarget.textContent = b.acquisitions_last_year
+    }
+    if (this.hasMarketActivityTarget) {
+      this.marketActivityTarget.textContent = b.market_activity || ""
+    }
+    if (this.hasBuyerAsOfTarget && b.as_of) {
+      this.buyerAsOfTarget.textContent = b.as_of
+    }
 
     this.companyNameTargets.forEach((t) => {
       if (a.company_name) t.textContent = a.company_name
@@ -203,6 +216,27 @@ export default class extends Controller {
 
     this.renderCategories(b.categories || [])
     this.renderBuyers(b.buyers || [])
+    this.renderSources(b.sources || [])
+  }
+
+  renderSources(sources) {
+    if (!this.hasBuyerSourcesTarget) return
+
+    this.buyerSourcesTarget.innerHTML = ""
+    if (!sources.length) {
+      this.buyerSourcesTarget.innerHTML = `<li class="text-slate-500">Buyer data is being compiled for your sector.</li>`
+      return
+    }
+    sources.forEach((src) => {
+      const li = document.createElement("li")
+      li.className = "flex gap-2"
+      const name = this.escapeHtml(src.name || "Market data")
+      const link = src.url
+        ? `<a href="${src.url}" target="_blank" rel="noopener" class="font-semibold text-brand-500 hover:underline">${name}</a>`
+        : `<span class="font-semibold text-brand-900">${name}</span>`
+      li.innerHTML = `<span class="text-brand-300">•</span><span>${link}</span>`
+      this.buyerSourcesTarget.appendChild(li)
+    })
   }
 
   renderCategories(categories) {
@@ -227,15 +261,16 @@ export default class extends Controller {
     buyers.forEach((buyer) => {
       const card = document.createElement("div")
       card.className = "rounded-sm border border-brand-100 bg-white p-7 shadow-soft"
+      const badge = buyer.acquisitions > 0
+        ? `${this.escapeHtml(buyer.type_label || "Acquirer")} · ${buyer.acquisitions} acquisitions in 2025`
+        : this.escapeHtml(buyer.type_label || "Active acquirer")
       card.innerHTML = `
-        <h3 class="font-serif text-3xl font-medium text-brand-900">${this.escapeHtml(buyer.name)}</h3>
-        <p class="mt-1 text-sm text-slate-500">Backed By: ${this.escapeHtml(buyer.backed_by)}</p>
-        <p class="mt-4 text-base leading-7 text-slate-700">${this.escapeHtml(buyer.rationale)}</p>
-        <div class="mt-6 space-y-3">
-          <div class="rounded-sm bg-brand-50 px-5 py-4 text-sm font-semibold text-slate-700">
-            Recent Acquisitions (${buyer.acquisitions})
-          </div>
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="font-serif text-3xl font-medium text-brand-900">${this.escapeHtml(buyer.name)}</h3>
+          <span class="shrink-0 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-900">${badge}</span>
         </div>
+        <p class="mt-1 text-sm text-slate-500">Backed By: ${this.escapeHtml(buyer.backed_by || "—")}</p>
+        <p class="mt-4 text-base leading-7 text-slate-700">${this.escapeHtml(buyer.rationale)}</p>
       `
       this.buyerCardsTarget.appendChild(card)
     })

@@ -120,3 +120,81 @@ COMP_SECTORS.each do |sector|
 end
 
 puts "Seeded #{Comp.count} comps across #{COMP_SECTORS.size} sectors."
+
+# --- Active acquirers (powers BuyerMatcher) ----------------------------------
+#
+# Real, named buyers from public 2025 M&A reporting: PE roll-up platforms,
+# strategic software acquirers, the search-fund / SBA buyer classes, and
+# content aggregators. `sectors` lists the industry slugs each is active in;
+# size bounds are in revenue dollars (nil = open-ended). Idempotent.
+
+ALL_SECTORS = %w[saas msp-it-services telecom-connectivity digital-media cybersecurity
+                 data-analytics-ai cloud-infrastructure adtech-martech other].freeze
+
+BUYERS = [
+  { name: "Evergreen Services Group", buyer_type: "pe_platform", backed_by: "Alpine Investors",
+    thesis: "Acquires and permanently holds regional MSPs and IT-services firms with strong recurring revenue; ran ~47 acquisitions in 2025 and crossed $1B ARR.",
+    sectors: %w[msp-it-services cybersecurity cloud-infrastructure], min_revenue: 1_000_000, max_revenue: 50_000_000,
+    acquisitions_count: 47, source: "Omdia / CT Acquisitions — MSP M&A 2025", source_url: "https://ctacquisitions.com/guides/private-equity-msp-2026/" },
+  { name: "New Charter Technologies", buyer_type: "pe_platform", backed_by: "Oval Partners",
+    thesis: "National MSP roll-up acquiring established managed-IT providers as equity partners.",
+    sectors: %w[msp-it-services cybersecurity], min_revenue: 2_000_000, max_revenue: 40_000_000,
+    acquisitions_count: 12, source: "Omdia — MSP M&A 2025", source_url: "https://omdia.tech.informa.com/blogs/2026/apr/msp-m-and-a-2025-deals-focus-on-cybersecurity-ai" },
+  { name: "Thrive", buyer_type: "pe_platform", backed_by: "Court Square Capital / Berkshire Partners",
+    thesis: "Acquires MSPs and MSSPs to build a global managed-security and IT platform.",
+    sectors: %w[msp-it-services cybersecurity cloud-infrastructure], min_revenue: 3_000_000, max_revenue: 60_000_000,
+    acquisitions_count: 8, source: "Solganick — MSP/MSSP M&A 2025", source_url: "https://solganick.com/msp-mssp-mergers-acquisitions-report-2025/" },
+  { name: "Ntiva", buyer_type: "pe_platform", backed_by: "PSP Capital",
+    thesis: "Acquires regional MSPs to expand managed-IT and security coverage.",
+    sectors: %w[msp-it-services cybersecurity], min_revenue: 1_000_000, max_revenue: 25_000_000,
+    acquisitions_count: 6, source: "Omdia — MSP M&A 2025", source_url: "https://omdia.tech.informa.com/blogs/2026/apr/msp-m-and-a-2025-deals-focus-on-cybersecurity-ai" },
+  { name: "Integris", buyer_type: "pe_platform", backed_by: "OMERS Private Equity",
+    thesis: "Acquires MSPs to build a national managed-IT platform.",
+    sectors: %w[msp-it-services], min_revenue: 2_000_000, max_revenue: 40_000_000,
+    acquisitions_count: 7, source: "Omdia — MSP M&A 2025", source_url: "https://omdia.tech.informa.com/blogs/2026/apr/msp-m-and-a-2025-deals-focus-on-cybersecurity-ai" },
+  { name: "Harbor IT", buyer_type: "pe_platform", backed_by: "Worklyn Partners",
+    thesis: "Cybersecurity-focused platform acquiring MSSPs and security specialists (e.g. Quadrant Information Security).",
+    sectors: %w[cybersecurity msp-it-services], min_revenue: 1_000_000, max_revenue: 30_000_000,
+    acquisitions_count: 4, source: "MSSP Alert / Omdia — 2025", source_url: "https://www.msspalert.com/news/recent-acquisitions-illustrate-consolidation-trends-in-cybersecurity" },
+  { name: "Constellation Software", buyer_type: "strategic", backed_by: "Public (TSX: CSU)",
+    thesis: "Acquires and permanently holds vertical-market software with recurring revenue across 100+ markets (via Volaris, Harris, Topicus, Vela, Jonas, Perseus).",
+    sectors: %w[saas data-analytics-ai adtech-martech other], min_revenue: 500_000, max_revenue: 100_000_000,
+    acquisitions_count: 30, source: "Morningstar / Tracxn — 2025", source_url: "https://www.morningstar.com/company-reports/1457085-constellation-software-is-the-leading-vertical-saas-acquirer" },
+  { name: "Volaris Group", buyer_type: "strategic", backed_by: "Constellation Software",
+    thesis: "Buy-and-hold acquirer of vertical-market software with recurring revenue; 240+ acquisitions across 40 verticals.",
+    sectors: %w[saas data-analytics-ai adtech-martech], min_revenue: 300_000, max_revenue: 50_000_000,
+    acquisitions_count: 240, source: "Volaris / Constellation Software — 2025", source_url: "https://www.volarisgroup.com/" },
+  { name: "Valsoft", buyer_type: "strategic", backed_by: "Private (Montreal holdco)",
+    thesis: "Acquires and operates mission-critical vertical-market software; most active strategic SaaS buyer in 2025 (16 acquisitions).",
+    sectors: %w[saas data-analytics-ai cybersecurity other], min_revenue: 500_000, max_revenue: 50_000_000,
+    acquisitions_count: 16, source: "Software Equity Group — 2025", source_url: "https://softwareequity.com/blog/top-strategic-buyers" },
+  { name: "ESW Capital (Trilogy)", buyer_type: "strategic", backed_by: "ESW Capital",
+    thesis: "Acquires enterprise software businesses and consolidates them via its Crossover / Trilogy operating model.",
+    sectors: %w[saas data-analytics-ai], min_revenue: 1_000_000, max_revenue: 100_000_000,
+    acquisitions_count: 10, source: "Hampleton Partners — enterprise software acquirers", source_url: "https://www.hampletonpartners.com/news/newsdetail/who-are-the-top-5-enterprise-software-acquirers/" },
+  { name: "Content & brand aggregators", buyer_type: "aggregator", backed_by: "Aggregator funds",
+    thesis: "Acquire profitable content sites, newsletters and digital-media brands to roll into larger portfolios.",
+    sectors: %w[digital-media adtech-martech], min_revenue: 100_000, max_revenue: 10_000_000,
+    acquisitions_count: 0, source: "Empire Flippers — content site marketplace", source_url: "https://empireflippers.com/content-site-goldrush/" },
+  { name: "Regional fiber & ISP consolidators", buyer_type: "pe_platform", backed_by: "Infrastructure investors",
+    thesis: "Roll up regional ISPs, fiber and connectivity operators for subscriber and network scale.",
+    sectors: %w[telecom-connectivity], min_revenue: 1_000_000, max_revenue: 100_000_000,
+    acquisitions_count: 0, source: "Focus Bankers / CoBank — telecom M&A 2025", source_url: "https://focusbankers.com/telecom-u-s-communications-service-provider-summer-2025-report/" },
+  { name: "Digital-infrastructure funds", buyer_type: "pe_platform", backed_by: "Infrastructure private equity",
+    thesis: "Acquire connectivity and managed-network operators with recurring subscriber revenue.",
+    sectors: %w[telecom-connectivity cloud-infrastructure], min_revenue: 3_000_000, max_revenue: 150_000_000,
+    acquisitions_count: 0, source: "RL Hulett / CoBank — telecom M&A 2025", source_url: "https://rlhulett.com/" },
+  { name: "Search-fund acquirers (Searchfunder network)", buyer_type: "search_fund", backed_by: "Search-fund investors",
+    thesis: "Individual operators backed by search-fund investors acquiring one profitable business ($1–10M revenue) to own and run.",
+    sectors: ALL_SECTORS, min_revenue: 1_000_000, max_revenue: 15_000_000,
+    acquisitions_count: 0, source: "Searchfunder / Stanford GSB search-fund studies", source_url: "https://www.searchfunder.com/" },
+  { name: "SBA 7(a) individual buyers", buyer_type: "sba", backed_by: "SBA 7(a) financing",
+    thesis: "Owner-operators acquiring established small businesses (deals up to ~$5M) with SBA-backed acquisition loans.",
+    sectors: ALL_SECTORS, min_revenue: 0, max_revenue: 6_000_000,
+    acquisitions_count: 0, source: "U.S. SBA 7(a) program / Live Oak Bank", source_url: "https://www.sba.gov/funding-programs/loans" }
+].freeze
+
+Buyer.delete_all
+BUYERS.each { |attrs| Buyer.create!(attrs) }
+
+puts "Seeded #{Buyer.count} active acquirers."
