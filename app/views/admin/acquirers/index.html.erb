@@ -1,0 +1,58 @@
+<section class="bg-slate-50 py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-extrabold text-brand-900">Acquirers</h1>
+        <p class="mt-2 text-slate-600">The buyer network shown on industry pages and the BuyerMap tool.</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <%= link_to "← Deals", admin_deals_path, class: "text-sm font-bold text-brand-700 hover:underline" %>
+        <%= link_to "New acquirer", new_admin_acquirer_path, class: "rounded-lg bg-brand-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-black" %>
+      </div>
+    </div>
+
+    <% if notice.present? %>
+      <p class="mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"><%= notice %></p>
+    <% end %>
+
+    <div class="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <% ["Name", "Type", "Sectors", "Deals (2025)", "Active", ""].each do |h| %>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500"><%= h %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <% @acquirers.each do |a| %>
+              <tr>
+                <td class="px-6 py-4 text-sm">
+                  <p class="font-semibold text-brand-900"><%= a.name %></p>
+                  <% if a.backed_by.present? %><p class="text-slate-500"><%= a.backed_by %></p><% end %>
+                </td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= a.type_label %></td>
+                <td class="px-6 py-4 text-sm text-slate-600">
+                  <%= a.sectors.map { |s| ValuationData.sector(s)["name"] }.first(2).join(", ") %>
+                  <%= "+#{a.sectors.size - 2}" if a.sectors.size > 2 %>
+                </td>
+                <td class="px-6 py-4 text-sm text-slate-600"><%= a.acquisitions_count %></td>
+                <td class="px-6 py-4 text-sm"><%= a.active? ? "Yes" : "No" %></td>
+                <td class="px-6 py-4 text-right text-sm">
+                  <%= link_to "Edit", edit_admin_acquirer_path(a), class: "font-bold text-brand-700" %>
+                  <%= button_to "Delete", admin_acquirer_path(a), method: :delete,
+                    form: { class: "inline", data: { turbo_confirm: "Remove #{a.name}?" } },
+                    class: "ml-3 cursor-pointer text-red-600 hover:underline" %>
+                </td>
+              </tr>
+            <% end %>
+            <% if @acquirers.empty? %>
+              <tr><td colspan="6" class="px-6 py-8 text-center text-sm text-slate-400">No acquirers yet — add one.</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

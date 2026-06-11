@@ -65,6 +65,24 @@ multiples in `db/seeds.rb`), re-run the seeds — they're idempotent:
 bin/kamal app exec "bin/rails db:seed"
 ```
 
+## Data strategy (seed vs. real)
+
+The seeds are a **starter / demo set**, not your production data. They're
+**upsert-based** (find-or-update by natural key), so re-running `db:seed`
+refreshes the starter rows but **never deletes** records you've curated in the
+admin. What's what:
+
+| Data | Source of truth | How to manage |
+| --- | --- | --- |
+| **Acquirers** (`Buyer`) | Admin — hand-curated | `/admin/acquirers` (add/edit/remove; set website → logo) |
+| **Deals** (`Deal`) | Admin — your real listings | `/admin/deals` (the 10 `TMT-00x` samples are demo) |
+| **Comps** (`Comp`) | Sourced benchmarks in `db/seeds.rb` | Refresh via `db:seed` (reference data) |
+| **Valuation multiples** | `app/services/valuation_data.rb` | Update quarterly from the cited public sources |
+
+**Going live:** delete the sample deals (`TMT-001`…`010`) and demo acquirers you
+don't want, then add your real ones in the admin. Re-seeding won't bring the
+deleted samples back unless their reference/name is still in `db/seeds.rb`.
+
 ## 5. Handy commands
 
 ```bash

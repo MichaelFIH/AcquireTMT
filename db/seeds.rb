@@ -208,10 +208,12 @@ BUYER_WEBSITES = {
   "SBA 7(a) individual buyers" => "sba.gov"
 }.freeze
 
-Buyer.delete_all
-BUYERS.each { |attrs| Buyer.create!(attrs.merge(website: BUYER_WEBSITES[attrs[:name]])) }
+# Upsert (don't delete_all) so acquirers curated in /admin/acquirers survive re-seeds.
+BUYERS.each do |attrs|
+  Buyer.find_or_initialize_by(name: attrs[:name]).update!(attrs.merge(website: BUYER_WEBSITES[attrs[:name]]))
+end
 
-puts "Seeded #{Buyer.count} active acquirers."
+puts "Seeded/updated #{BUYERS.size} starter acquirers (#{Buyer.count} total)."
 
 # --- Sample deal listings (buyer deal feed) ----------------------------------
 # Anonymized TMT businesses for sale. Idempotent.
@@ -261,7 +263,10 @@ DEALS = [
 
 GREEK = %w[Alpha Beta Gamma Delta Epsilon Zeta Eta Theta Iota Kappa].freeze
 
-Deal.delete_all
-DEALS.each_with_index { |attrs, i| Deal.create!(attrs.merge(codename: GREEK[i % GREEK.size])) }
+# Upsert by reference — sample deals refresh, but real deals added in
+# /admin/deals (with their documents + access requests) are never wiped.
+DEALS.each_with_index do |attrs, i|
+  Deal.find_or_initialize_by(reference: attrs[:reference]).update!(attrs.merge(codename: GREEK[i % GREEK.size]))
+end
 
-puts "Seeded #{Deal.count} deal listings."
+puts "Seeded/updated #{DEALS.size} sample deals (#{Deal.count} total)."

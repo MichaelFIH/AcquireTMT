@@ -1,0 +1,72 @@
+<% input = "mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-brand-900" %>
+
+<%= form_with model: @acquirer, scope: :buyer,
+  url: (@acquirer.persisted? ? admin_acquirer_path(@acquirer) : admin_acquirers_path) do |f| %>
+  <% if @acquirer.errors.any? %>
+    <div class="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+      <%= @acquirer.errors.full_messages.to_sentence %>
+    </div>
+  <% end %>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <%= f.label :name, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :name, class: input %>
+    </div>
+    <div>
+      <%= f.label :buyer_type, "Type", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.select :buyer_type, Buyer::TYPES.map { |t| [Buyer::TYPE_LABELS[t], t] }, {}, class: input %>
+    </div>
+    <div>
+      <%= f.label :backed_by, "Backed by", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :backed_by, class: input %>
+    </div>
+    <div>
+      <%= f.label :website, class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :website, placeholder: "example.com", class: input %>
+    </div>
+    <div>
+      <%= f.label :min_revenue, "Min revenue ($)", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :min_revenue, class: input %>
+    </div>
+    <div>
+      <%= f.label :max_revenue, "Max revenue ($)", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :max_revenue, class: input %>
+    </div>
+    <div>
+      <%= f.label :acquisitions_count, "Acquisitions (2025)", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.number_field :acquisitions_count, class: input %>
+    </div>
+    <div>
+      <%= f.label :source, "Source", class: "block text-sm font-bold text-slate-700" %>
+      <%= f.text_field :source, class: input %>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <%= f.label :thesis, "What they're looking for", class: "block text-sm font-bold text-slate-700" %>
+    <%= f.text_area :thesis, rows: 3, class: input %>
+  </div>
+
+  <div class="mt-5">
+    <p class="block text-sm font-bold text-slate-700">Sectors</p>
+    <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <% ValuationData::SECTORS.each do |slug, sector| %>
+        <label class="flex items-center gap-2 text-sm text-slate-700">
+          <%= check_box_tag "buyer[sectors][]", slug, @acquirer.sectors.include?(slug) %>
+          <%= sector["name"] %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <label class="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700">
+    <%= f.check_box :active %>
+    Active (show in the buyer network)
+  </label>
+
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.submit "Save acquirer", class: "cursor-pointer rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-black" %>
+    <%= link_to "Cancel", admin_acquirers_path, class: "text-sm font-bold text-slate-500 hover:text-slate-700" %>
+  </div>
+<% end %>

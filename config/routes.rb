@@ -66,5 +66,7 @@ Rails.application.routes.draw do
         patch :decline
       end
     end
+    # The acquirer ("Buyer" model) network — hand-curated, replaces seed-only data.
+    resources :acquirers, controller: "acquirers"
   end
 end
