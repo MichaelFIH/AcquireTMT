@@ -138,6 +138,39 @@ class Public::IndustriesController < ApplicationController
     }
   }.freeze
 
+  # Shared across every industry page (only the hero + intro change per sector).
+  TEAM = [
+    { name: "Daniel Hart",   title: "Managing Director, Head of M&A" },
+    { name: "Priya Nair",    title: "Director, TMT Investment Banking" },
+    { name: "Marcus Lowe",   title: "Vice President, Deal Origination" },
+    { name: "Elena Vasquez", title: "Vice President, Buyer Coverage" }
+  ].freeze
+
+  WHY_CHOOSE = [
+    { icon: "target", title: "Industry expertise",
+      body: "We know what TMT buyers pay premium for — recurring revenue, retention, margin and defensibility — and how to position yours." },
+    { icon: "users", title: "Buyer network",
+      body: "Direct relationships with active PE-backed platforms and strategic acquirers, matched on sector, size and deal criteria." },
+    { icon: "route", title: "Proven process",
+      body: "We package your financials, run a confidential outreach, and create competitive tension to maximize price and terms." }
+  ].freeze
+
+  HIGHLIGHTS = [
+    { title: "How buyers assess risk when acquiring a TMT business",
+      body: "Buyers underwrite recurring-revenue quality, customer concentration, churn, and key-person risk. We help you de-risk each before going to market." },
+    { title: "How to sell your business: a step-by-step guide",
+      body: "From valuation and packaging to outreach, diligence and close — your sale succeeds or stalls on a handful of factors. Here's how to maximize each." },
+    { title: "Common deal structures when selling a TMT business",
+      body: "Asset vs. stock sales, earnouts, rollover equity and seller notes each change your net proceeds and risk. We help you choose the right one." }
+  ].freeze
+
+  EVENTS = [
+    { name: "SaaStr Annual",          type: "In-person conference", location: "San Francisco, CA", date: "Sep 9–11, 2026" },
+    { name: "Channel Partners Expo",  type: "In-person conference", location: "Las Vegas, NV",     date: "Mar 23–26, 2026" },
+    { name: "RSA Conference",         type: "In-person conference", location: "San Francisco, CA", date: "Apr 27–30, 2026" },
+    { name: "INBOUND",                type: "In-person conference", location: "Boston, MA",        date: "Sep 1–4, 2026" }
+  ].freeze
+
   def show
     @industry = INDUSTRIES[params[:slug]]
 
@@ -147,5 +180,6 @@ class Public::IndustriesController < ApplicationController
     end
 
     @slug = params[:slug]
+    @network_buyers = Buyer.active.where("? = ANY (sectors)", @slug).order(acquisitions_count: :desc).limit(6)
   end
 end
