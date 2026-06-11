@@ -104,33 +104,70 @@
         </svg>
       </div>
 
-      <!-- Active buyers list -->
-      <div class="flex flex-col rounded-sm border border-brand-100 bg-brand-50 shadow-soft">
-        <div class="p-6">
-          <p class="font-bold text-brand-900">Active buyers</p>
-          <p class="mt-1 text-sm text-slate-500">Select a platform to see where they're acquiring</p>
+      <!-- Right column: buyer list <-> detail -->
+      <div>
+        <!-- LIST -->
+        <div data-usmap-target="list" class="flex flex-col rounded-sm border border-brand-100 bg-brand-50 shadow-soft">
+          <div class="p-6">
+            <p class="font-bold text-brand-900">Active buyers</p>
+            <p class="mt-1 text-sm text-slate-500">Hover to see locations · click for details</p>
+          </div>
+          <div class="divide-y divide-brand-100 border-t border-brand-100">
+            <% @network_buyers.each_with_index do |buyer, i| %>
+              <button type="button" data-buyer="<%= i %>"
+                data-action="mouseenter->usmap#hover mouseleave->usmap#unhover click->usmap#select"
+                class="flex w-full items-center justify-between gap-3 px-6 py-4 text-left transition hover:bg-white">
+                <span class="text-sm font-semibold text-brand-900"><%= buyer.name %></span>
+                <span class="flex items-center gap-3">
+                  <span class="text-sm text-slate-500"><%= buyer.acquisitions_count.positive? ? "#{buyer.acquisitions_count} deals" : buyer.type_label %></span>
+                  <%= lucide_icon "chevron-right", class: "h-4 w-4 text-slate-400" %>
+                </span>
+              </button>
+            <% end %>
+          </div>
+          <div class="border-t border-brand-100 p-6">
+            <p class="text-sm font-semibold text-brand-900">Preview <%= @industry[:name] %> buyers</p>
+            <%= form_with url: tools_find_buyers_path, method: :get, class: "mt-3" do %>
+              <%= text_field_tag :website, nil, placeholder: "Company website URL",
+                class: "w-full rounded-sm border border-brand-100 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-300" %>
+              <%= submit_tag "Find Buyers",
+                class: "mt-3 w-full cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
+            <% end %>
+          </div>
         </div>
-        <div class="divide-y divide-brand-100 border-t border-brand-100">
-          <% @network_buyers.each_with_index do |buyer, i| %>
-            <button type="button" data-usmap-row data-buyer="<%= i %>" data-action="click->usmap#focus"
-              class="flex w-full items-center justify-between gap-3 px-6 py-4 text-left transition hover:bg-white">
-              <span class="text-sm font-semibold text-brand-900"><%= buyer.name %></span>
-              <span class="flex items-center gap-3">
-                <span class="text-sm text-slate-500"><%= buyer.acquisitions_count.positive? ? "#{buyer.acquisitions_count} deals" : buyer.type_label %></span>
-                <%= lucide_icon "chevron-right", class: "h-4 w-4 text-slate-400" %>
-              </span>
+
+        <!-- DETAIL panels -->
+        <% @network_buyers.each_with_index do |buyer, i| %>
+          <div data-usmap-target="detail" data-buyer="<%= i %>" class="hidden rounded-sm border border-brand-100 bg-brand-50 p-6 shadow-soft">
+            <button type="button" data-action="usmap#back" class="flex items-center gap-2 text-sm font-bold text-brand-700 hover:underline">
+              <%= lucide_icon "arrow-left", class: "h-4 w-4" %> Back
             </button>
-          <% end %>
-        </div>
-        <div class="border-t border-brand-100 p-6">
-          <p class="text-sm font-semibold text-brand-900">Preview <%= @industry[:name] %> buyers</p>
-          <%= form_with url: tools_find_buyers_path, method: :get, class: "mt-3" do %>
-            <%= text_field_tag :website, nil, placeholder: "Company website URL",
-              class: "w-full rounded-sm border border-brand-100 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-300" %>
-            <%= submit_tag "Find Buyers",
-              class: "mt-3 w-full cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
-          <% end %>
-        </div>
+            <h3 class="mt-4 font-serif text-2xl font-medium text-brand-900"><%= buyer.name %></h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-brand-500"><%= buyer.type_label %></p>
+
+            <% if buyer.backed_by.present? %>
+              <div class="mt-5 border-t border-brand-100 pt-5">
+                <p class="flex items-center gap-2 text-sm font-bold text-brand-900"><%= lucide_icon "circle-dollar-sign", class: "h-4 w-4 text-brand-500" %> Backed by</p>
+                <p class="mt-1 text-sm text-slate-600"><%= buyer.backed_by %></p>
+              </div>
+            <% end %>
+
+            <% if buyer.acquisitions_count.positive? %>
+              <div class="mt-5 border-t border-brand-100 pt-5">
+                <p class="flex items-center gap-2 text-sm font-bold text-brand-900"><%= lucide_icon "history", class: "h-4 w-4 text-brand-500" %> Recent activity</p>
+                <p class="mt-1 text-sm text-slate-600"><%= buyer.acquisitions_count %> acquisitions in 2025</p>
+              </div>
+            <% end %>
+
+            <div class="mt-5 border-t border-brand-100 pt-5">
+              <p class="text-sm font-bold text-brand-900">What they're looking for</p>
+              <p class="mt-1 text-sm leading-6 text-slate-600"><%= buyer.thesis %></p>
+            </div>
+
+            <%= link_to "See if they're interested in your business", tools_find_buyers_path,
+              class: "mt-6 block rounded-sm bg-brand-900 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-brand-500" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -191,19 +228,28 @@
   </div>
 </section>
 
-<!-- CTA -->
-<section class="bg-brand-50 py-20">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-sm bg-brand-900 p-8 text-white shadow-soft sm:p-12">
-      <h2 class="font-serif text-3xl font-medium sm:text-4xl">Curious about your potential buyers?</h2>
-      <p class="mt-3 max-w-xl text-sm leading-7 text-white/70">
-        Get a free, personalized list of active buyers for your <%= @industry[:name] %> business.
-      </p>
-      <%= form_with url: tools_find_buyers_path, method: :get, class: "mt-6 flex flex-col gap-3 sm:flex-row" do %>
-        <%= text_field_tag :website, nil, placeholder: "Company website URL",
-          class: "flex-1 rounded-sm border border-white/10 bg-white px-5 py-4 text-sm text-brand-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-300" %>
-        <%= submit_tag "Find Buyers",
-          class: "cursor-pointer rounded-sm bg-brand-300 px-8 py-4 text-sm font-bold text-brand-900 transition hover:bg-white" %>
+<!-- CTA (text left, image right) -->
+<section class="bg-white py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-10 rounded-sm bg-brand-50 p-8 sm:p-12 lg:grid-cols-2">
+      <div>
+        <h2 class="font-serif text-4xl font-medium leading-tight text-brand-900 sm:text-5xl">
+          Curious about your<br><span class="text-slate-400">potential buyers?</span>
+        </h2>
+        <p class="mt-5 text-lg leading-8 text-slate-600">
+          Try our <span class="font-bold text-brand-900">AI Buyer Match tool</span> to receive a personalized list of active buyers in your industry.
+        </p>
+        <%= form_with url: tools_find_buyers_path, method: :get, class: "mt-7 flex max-w-md gap-2 rounded-sm bg-white p-2 shadow-soft" do %>
+          <%= text_field_tag :website, nil, placeholder: "Company website URL",
+            class: "min-w-0 flex-1 rounded-sm px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400 focus:outline-none" %>
+          <%= submit_tag "Find Buyers",
+            class: "shrink-0 cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
+        <% end %>
+      </div>
+      <% if @industry[:hero_image].present? %>
+        <div class="overflow-hidden rounded-sm">
+          <%= image_tag @industry[:hero_image], class: "aspect-[4/3] w-full object-cover", alt: @industry[:name] %>
+        </div>
       <% end %>
     </div>
   </div>
