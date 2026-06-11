@@ -1,6 +1,6 @@
 class Admin::LeadsController < Admin::BaseController
   def index
-    @leads = Lead.order(created_at: :desc)
+    @leads = Lead.includes(:tool_runs).order(created_at: :desc)
   end
 
   def show

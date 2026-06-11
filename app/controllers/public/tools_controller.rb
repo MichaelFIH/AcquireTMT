@@ -46,7 +46,7 @@ class Public::ToolsController < ApplicationController
       salary_addback: salary
     ).call
 
-    ToolRun.create(
+    track_tool_run(ToolRun.create(
       tool_type: "valuation",
       website: website,
       company_name: analysis["company_name"],
@@ -54,7 +54,7 @@ class Public::ToolsController < ApplicationController
       analysis: analysis,
       result: valuation,
       status: "complete"
-    )
+    ))
 
     render json: { analysis: analysis, valuation: valuation }
   rescue ClaudeClient::NotConfigured
@@ -97,7 +97,7 @@ class Public::ToolsController < ApplicationController
       earnings: profit
     ).call
 
-    ToolRun.create(
+    track_tool_run(ToolRun.create(
       tool_type: "market_comps",
       website: website,
       company_name: analysis["company_name"],
@@ -105,7 +105,7 @@ class Public::ToolsController < ApplicationController
       analysis: analysis,
       result: comps,
       status: "complete"
-    )
+    ))
 
     render json: { analysis: analysis, comps: comps }
   rescue ClaudeClient::NotConfigured
@@ -142,7 +142,7 @@ class Public::ToolsController < ApplicationController
     analysis = WebsiteAnalyzer.new(website).call
     buyers = BuyerMatcher.new(industry: analysis["industry"], revenue: revenue).call
 
-    ToolRun.create(
+    track_tool_run(ToolRun.create(
       tool_type: "buyer_map",
       website: website,
       company_name: analysis["company_name"],
@@ -150,7 +150,7 @@ class Public::ToolsController < ApplicationController
       analysis: analysis,
       result: buyers,
       status: "complete"
-    )
+    ))
 
     render json: { analysis: analysis, buyers: buyers }
   rescue ClaudeClient::NotConfigured
@@ -171,6 +171,16 @@ class Public::ToolsController < ApplicationController
   private
 
   AI_NOT_CONFIGURED = "The AI engine isn't configured yet. Set ANTHROPIC_API_KEY and restart the server.".freeze
+
+  # Remember the tool runs this visitor generated so they can be linked to the
+  # Lead they become when they submit a tool's lead form (see
+  # Public::LeadsController#create). Capped to the visitor's recent runs.
+  def track_tool_run(run)
+    return unless run&.persisted?
+
+    ids = Array(session[:tool_run_ids]) + [run.id]
+    session[:tool_run_ids] = ids.uniq.last(10)
+  end
 
   # Rendered when a client trips one of the rate limits above.
   def rate_limited

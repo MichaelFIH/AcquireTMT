@@ -11,6 +11,7 @@
               <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Name</th>
               <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Company</th>
               <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Source</th>
+              <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Tools</th>
               <th class="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">Status</th>
               <th class="px-6 py-4"></th>
             </tr>
@@ -24,6 +25,14 @@
                 </td>
                 <td class="px-6 py-4 text-sm text-slate-600"><%= lead.company_name %></td>
                 <td class="px-6 py-4 text-sm text-slate-600"><%= lead.source&.humanize %></td>
+                <td class="px-6 py-4 text-sm">
+                  <% count = lead.tool_runs.size %>
+                  <% if count.positive? %>
+                    <span class="inline-flex rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700"><%= count %> run<%= "s" if count > 1 %></span>
+                  <% else %>
+                    <span class="text-slate-400">—</span>
+                  <% end %>
+                </td>
                 <td class="px-6 py-4 text-sm text-slate-600"><%= lead.status&.humanize %></td>
                 <td class="px-6 py-4 text-right">
                   <%= link_to "View", admin_lead_path(lead), class: "text-sm font-bold text-brand-700" %>

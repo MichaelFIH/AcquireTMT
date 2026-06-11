@@ -4,6 +4,7 @@ class Public::LeadsController < ApplicationController
     @lead.status ||= "new_lead"
 
     if @lead.save
+      attach_tool_runs(@lead)
       redirect_back fallback_location: root_path,
                     notice: "Thanks. Your request has been received."
     else
@@ -13,6 +14,17 @@ class Public::LeadsController < ApplicationController
   end
 
   private
+
+  # Link any tool runs this visitor generated in their session (see
+  # Public::ToolsController#track_tool_run) to the lead they just became, so an
+  # advisor sees the valuation / comps / buyers that brought them in.
+  def attach_tool_runs(lead)
+    ids = Array(session[:tool_run_ids])
+    return if ids.empty?
+
+    ToolRun.where(id: ids, lead_id: nil).update_all(lead_id: lead.id, updated_at: Time.current)
+    session.delete(:tool_run_ids)
+  end
 
   def lead_params
     params.require(:lead).permit(
