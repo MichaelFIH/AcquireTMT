@@ -274,11 +274,9 @@
             class: "shrink-0 cursor-pointer rounded-sm bg-brand-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
         <% end %>
       </div>
-      <% if @industry[:hero_image].present? %>
-        <div class="overflow-hidden rounded-sm">
-          <%= image_tag @industry[:hero_image], class: "aspect-[4/3] w-full object-cover", alt: @industry[:name] %>
-        </div>
-      <% end %>
+      <div class="overflow-hidden rounded-sm">
+        <%= image_tag "cta-owner.jpg", class: "aspect-[4/3] w-full object-cover", alt: "Business owner exploring their options", loading: "lazy" %>
+      </div>
     </div>
   </div>
 </section>

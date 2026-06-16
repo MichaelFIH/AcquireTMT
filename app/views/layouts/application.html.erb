@@ -27,6 +27,11 @@
   </head>
 
   <body>
+    <div data-controller="preloader" class="preloader">
+      <span class="font-serif text-3xl font-semibold text-white">Acquire<span class="text-brand-300">TMT</span></span>
+      <span class="preloader-spinner"></span>
+    </div>
+
     <%= render "shared/navbar" %>
 
 <% if notice.present? || alert.present? %>
