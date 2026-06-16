@@ -35,6 +35,19 @@ class Buyer < ApplicationRecord
     TYPE_LABELS[buyer_type] || buyer_type
   end
 
+  # Broad category for the seller "Potential Buyers" filter tabs.
+  CATEGORIES = {
+    "pe_platform" => "Private Equity",
+    "strategic"   => "Corporate",
+    "aggregator"  => "Corporate",
+    "search_fund" => "Individual",
+    "sba"         => "Individual"
+  }.freeze
+
+  def category
+    CATEGORIES[buyer_type] || "Corporate"
+  end
+
   def website_url
     return nil if website.blank?
 

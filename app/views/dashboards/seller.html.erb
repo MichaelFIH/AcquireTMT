@@ -53,6 +53,49 @@
       <% end %>
     </div>
 
+    <!-- Potential buyers -->
+    <div class="mt-8 rounded-sm border border-brand-100 bg-white p-8 shadow-soft" data-controller="buyer-filter">
+      <h2 class="font-serif text-2xl font-medium text-brand-900">Potential buyers</h2>
+      <% if @potential_buyers.any? %>
+        <p class="mt-1 text-sm text-slate-600">Acquirers actively buying <%= ValuationData.sector(@sector)["name"] %> businesses like yours.</p>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <% [["All", "all"], ["Private Equity", "Private Equity"], ["Corporate", "Corporate"], ["Individual", "Individual"]].each_with_index do |(label, cat), i| %>
+            <button type="button" data-action="buyer-filter#filter" data-category="<%= cat %>" data-buyer-filter-target="tab"
+              class="rounded-full px-4 py-1.5 text-sm font-semibold transition <%= i.zero? ? "bg-brand-900 text-white" : "bg-brand-50 text-brand-900" %>">
+              <%= label %><%= " (#{@potential_buyers.size})" if i.zero? %>
+            </button>
+          <% end %>
+        </div>
+
+        <div class="mt-6 divide-y divide-brand-100 border-t border-brand-100">
+          <% @potential_buyers.each do |buyer| %>
+            <div data-buyer-filter-target="row" data-category="<%= buyer.category %>" class="grid gap-4 py-5 md:grid-cols-[210px_1fr_1fr]">
+              <div>
+                <p class="font-serif text-lg font-medium text-brand-900"><%= buyer.name %></p>
+                <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-brand-500"><%= buyer.category %></p>
+              </div>
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">About</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600"><%= buyer.thesis %></p>
+              </div>
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Activity</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">
+                  <%= buyer.acquisitions_count.positive? ? "#{buyer.acquisitions_count} acquisitions in 2025" : "Active acquirer" %><% if buyer.backed_by.present? %> · Backed by <%= buyer.backed_by %><% end %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mt-3 text-sm text-slate-600">
+          Run the <%= link_to "BuyerMap tool", tools_find_buyers_path, class: "font-semibold text-brand-500 hover:underline" %>
+          and we'll show the acquirers matched to your business here.
+        </p>
+      <% end %>
+    </div>
+
     <div class="mt-8 rounded-sm border border-brand-100 bg-white p-8 shadow-soft">
       <h2 class="font-serif text-2xl font-medium text-brand-900">Your tool history</h2>
       <p class="mt-1 text-sm text-slate-600">Valuations, comps and BuyerMaps you've run, newest first.</p>
