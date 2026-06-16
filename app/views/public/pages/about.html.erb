@@ -41,10 +41,10 @@
     </div>
     <div class="mt-8 flex flex-wrap items-center gap-8">
       <% [["Neil Bostick", "Founder & CEO", "team/neil.jpg"], ["Andreas Becker", "CTO", "team/andreas.jpg"]].each do |name, title, img| %>
-        <div class="flex items-center gap-4">
-          <%= image_tag img, class: "h-16 w-16 rounded-full object-cover", alt: name %>
+        <div class="group flex items-center gap-4">
+          <%= image_tag img, class: "h-16 w-16 rounded-full object-cover grayscale transition duration-500 group-hover:grayscale-0", alt: name %>
           <div>
-            <p class="font-bold text-brand-900"><%= name %></p>
+            <p class="font-bold text-brand-900 transition-colors group-hover:text-brand-500"><%= name %></p>
             <p class="text-sm text-slate-500"><%= title %></p>
           </div>
         </div>
@@ -56,8 +56,8 @@
 <!-- MEET THE TEAM -->
 <section class="bg-brand-50 py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <h2 class="text-center font-serif text-4xl font-medium text-brand-900">Meet the team</h2>
-    <p class="mx-auto mt-3 max-w-2xl text-center text-base leading-7 text-slate-600">
+    <h2 class="text-center font-serif text-4xl font-medium text-brand-900" data-controller="reveal">Meet the team</h2>
+    <p class="mx-auto mt-3 max-w-2xl text-center text-base leading-7 text-slate-600" data-controller="reveal" data-reveal-delay-value="80">
       Seasoned operators across M&A execution, research, and client advisory.
     </p>
 
@@ -72,10 +72,12 @@
       ["Cielo Camille Alcantara", "Operations & Client Coordination", "team/cielo.jpg"]
     ] %>
     <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      <% team.each do |name, title, img| %>
-        <div class="text-center">
-          <%= image_tag img, class: "mx-auto h-32 w-32 rounded-full object-cover shadow-soft", alt: name %>
-          <p class="mt-4 font-bold text-brand-900"><%= name %></p>
+      <% team.each_with_index do |(name, title, img), i| %>
+        <div class="group text-center hover-lift" data-controller="reveal" data-reveal-delay-value="<%= (i % 4) * 90 %>">
+          <div class="mx-auto h-32 w-32 overflow-hidden rounded-full shadow-soft ring-2 ring-transparent transition duration-500 group-hover:ring-brand-300">
+            <%= image_tag img, class: "h-full w-full object-cover grayscale transition duration-500 group-hover:grayscale-0 group-hover:scale-105", alt: name %>
+          </div>
+          <p class="mt-4 font-bold text-brand-900 transition-colors group-hover:text-brand-500"><%= name %></p>
           <p class="mt-1 text-sm text-slate-500"><%= title %></p>
         </div>
       <% end %>
