@@ -7,11 +7,15 @@ class Public::LeadsController < ApplicationController
 
     if @lead.save
       attach_tool_runs(@lead)
-      redirect_back fallback_location: root_path,
-                    notice: "Thanks. Your request has been received."
+      respond_to do |format|
+        format.json { render json: { ok: true } }
+        format.html { redirect_back fallback_location: root_path, notice: "Thanks. Your request has been received." }
+      end
     else
-      redirect_back fallback_location: root_path,
-                    alert: @lead.errors.full_messages.to_sentence
+      respond_to do |format|
+        format.json { render json: { ok: false, error: @lead.errors.full_messages.to_sentence }, status: :unprocessable_entity }
+        format.html { redirect_back fallback_location: root_path, alert: @lead.errors.full_messages.to_sentence }
+      end
     end
   end
 

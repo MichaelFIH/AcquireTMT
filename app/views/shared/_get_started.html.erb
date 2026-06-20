@@ -1,0 +1,80 @@
+<% gs_input = "w-full rounded-sm border border-brand-100 bg-white px-4 py-3 text-sm text-brand-900 placeholder:text-slate-400 focus:border-brand-300 focus:outline-none focus:ring-1 focus:ring-brand-300" %>
+
+<div data-get-started-target="modal" data-action="click->get-started#backdrop"
+  class="hidden fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-brand-900/70 px-4 py-10 backdrop-blur-sm">
+  <div class="relative w-full max-w-md rounded-sm bg-white p-8 shadow-xl">
+    <button type="button" data-action="get-started#close" aria-label="Close"
+      class="absolute right-4 top-4 text-slate-400 transition hover:text-brand-900">
+      <%= lucide_icon "x", class: "h-5 w-5" %>
+    </button>
+
+    <!-- STEP 1: choose -->
+    <div data-get-started-target="choice">
+      <p class="text-center font-serif text-2xl font-medium text-brand-900">Investment banking for TMT</p>
+      <div class="mt-6 space-y-3">
+        <button type="button" data-action="get-started#chooseSeller"
+          class="flex w-full items-center gap-4 rounded-sm border border-brand-100 p-4 text-left transition hover:border-brand-300 hover:bg-brand-50">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-brand-50 text-brand-500"><%= lucide_icon "trending-up", class: "h-5 w-5" %></span>
+          <span class="min-w-0 flex-1">
+            <span class="block font-bold text-brand-900">I'm a Business Seller</span>
+            <span class="block text-sm text-slate-500">Connect with an advisor to discuss your goals</span>
+          </span>
+          <%= lucide_icon "chevron-right", class: "h-5 w-5 shrink-0 text-slate-300" %>
+        </button>
+
+        <%= link_to sign_up_path(role: "buyer"),
+          class: "flex w-full items-center gap-4 rounded-sm border border-brand-100 p-4 text-left transition hover:border-brand-300 hover:bg-brand-50" do %>
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-brand-50 text-brand-500"><%= lucide_icon "briefcase-business", class: "h-5 w-5" %></span>
+          <span class="min-w-0 flex-1">
+            <span class="block font-bold text-brand-900">I'm a Business Buyer</span>
+            <span class="block text-sm text-slate-500">Join the Buyer Network to access deal flow</span>
+          </span>
+          <%= lucide_icon "chevron-right", class: "h-5 w-5 shrink-0 text-slate-300" %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- STEP 2: seller lead form -->
+    <div data-get-started-target="sellerForm" class="hidden">
+      <div class="flex items-center gap-2">
+        <%= lucide_icon "phone-call", class: "h-5 w-5 text-brand-500" %>
+        <h3 class="font-serif text-xl font-medium text-brand-900">Speak to an investment banker</h3>
+      </div>
+      <p class="mt-1 text-sm text-slate-500">Please provide details about your business.</p>
+
+      <p data-get-started-target="error" class="hidden mt-4 rounded-sm border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700"></p>
+
+      <form data-action="get-started#submit" class="mt-5 space-y-3">
+        <input type="hidden" name="lead[source]" value="get_started_seller">
+        <input type="text"  name="lead[first_name]"      placeholder="Full Name"           required class="<%= gs_input %>">
+        <input type="text"  name="lead[company_name]"    placeholder="Business Name"        required class="<%= gs_input %>">
+        <input type="email" name="lead[email]"           placeholder="Email Address"        required class="<%= gs_input %>">
+        <input type="tel"   name="lead[phone]"           placeholder="Mobile Number"                 class="<%= gs_input %>">
+        <input type="url"   name="lead[company_website]" placeholder="Business Website URL"           class="<%= gs_input %>">
+        <select name="lead[revenue_range]" class="<%= gs_input %>">
+          <option value="">What was your 2025 revenue?</option>
+          <% ["Under $1M", "$1M – $5M", "$5M – $25M", "$25M – $100M", "$100M+"].each do |o| %><option><%= o %></option><% end %>
+        </select>
+        <select name="lead[ebitda_range]" class="<%= gs_input %>">
+          <option value="">What is your annual profit?</option>
+          <% ["Not profitable yet", "Under $250k", "$250k – $1M", "$1M – $5M", "$5M+"].each do |o| %><option><%= o %></option><% end %>
+        </select>
+        <select name="lead[message]" class="<%= gs_input %>">
+          <option value="">When are you looking to sell?</option>
+          <% ["Immediately", "3–6 months", "6–12 months", "Just exploring"].each do |o| %><option><%= o %></option><% end %>
+        </select>
+        <button type="submit" class="w-full cursor-pointer rounded-sm bg-brand-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-500">Get started for free</button>
+      </form>
+    </div>
+
+    <!-- STEP 3: thanks -->
+    <div data-get-started-target="thanks" class="hidden">
+      <div class="flex flex-col items-center py-6 text-center">
+        <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600"><%= lucide_icon "check", class: "h-6 w-6" %></span>
+        <h3 class="mt-4 font-serif text-2xl font-medium text-brand-900">Thank you</h3>
+        <p class="mt-2 max-w-xs text-sm leading-6 text-slate-600">Thanks for submitting your information. An AcquireTMT advisor will be in touch shortly.</p>
+        <button type="button" data-action="get-started#close" class="mt-6 rounded-sm border border-brand-100 px-5 py-2.5 text-sm font-bold text-brand-900 transition hover:bg-brand-50">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
