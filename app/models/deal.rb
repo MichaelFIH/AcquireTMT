@@ -21,8 +21,10 @@ class Deal < ApplicationRecord
   def self.for_buyer(user)
     scope = active
     scope = scope.where(industry: user.mandate_industries) if user.mandate_industries.present?
-    scope = scope.where("asking_price >= ?", user.ev_min) if user.ev_min.present?
-    scope = scope.where("asking_price <= ?", user.ev_max) if user.ev_max.present?
+    # Filter by the buyer's EV range, but always include deals with no listed
+    # price (they still match on industry and shouldn't be hidden by the range).
+    scope = scope.where("asking_price IS NULL OR asking_price >= ?", user.ev_min) if user.ev_min.present?
+    scope = scope.where("asking_price IS NULL OR asking_price <= ?", user.ev_max) if user.ev_max.present?
     scope.order(created_at: :desc)
   end
 
