@@ -1,0 +1,34 @@
+<% content_for :title, "Admin sign in — AcquireTMT" %>
+<% input = "mt-1 w-full rounded-sm border border-brand-100 px-4 py-2.5 text-sm text-brand-900 focus:border-brand-300 focus:outline-none focus:ring-1 focus:ring-brand-300" %>
+
+<section class="flex min-h-screen items-center justify-center px-4 py-12">
+  <div class="w-full max-w-sm">
+    <%= link_to root_path, class: "block text-center font-serif text-3xl font-semibold tracking-tight text-white" do %>
+      Acquire<span class="text-brand-300">TMT</span>
+    <% end %>
+    <p class="mt-2 text-center text-sm font-semibold uppercase tracking-[0.2em] text-brand-300">Admin</p>
+
+    <div class="mt-8 rounded-sm bg-white p-8 shadow-soft">
+      <h1 class="font-serif text-2xl font-medium text-brand-900">Sign in</h1>
+      <p class="mt-1 text-sm text-slate-500">Enter your admin credentials to continue.</p>
+
+      <% if alert.present? %>
+        <p class="mt-5 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"><%= alert %></p>
+      <% end %>
+
+      <%= form_with url: admin_login_path, method: :post, class: "mt-6 space-y-4" do %>
+        <div>
+          <%= label_tag :username, "Username", class: "block text-sm font-semibold text-brand-900" %>
+          <%= text_field_tag :username, nil, autofocus: true, autocomplete: "username", class: input %>
+        </div>
+        <div>
+          <%= label_tag :password, "Password", class: "block text-sm font-semibold text-brand-900" %>
+          <%= password_field_tag :password, nil, autocomplete: "current-password", class: input %>
+        </div>
+        <%= submit_tag "Sign in", class: "w-full cursor-pointer rounded-sm bg-brand-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-500" %>
+      <% end %>
+    </div>
+
+    <p class="mt-6 text-center text-xs text-white/40">← <%= link_to "Back to site", root_path, class: "hover:text-white/70" %></p>
+  </div>
+</section>

@@ -54,6 +54,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    get    "login",  to: "sessions#new",     as: :login
+    post   "login",  to: "sessions#create"
+    delete "logout", to: "sessions#destroy", as: :logout
+
     resources :leads, only: [:index, :show, :update]
     resources :deals do
       resources :documents, only: [:create, :destroy], controller: "deal_documents"
