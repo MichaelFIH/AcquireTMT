@@ -4,9 +4,19 @@
       <h1 class="text-3xl font-extrabold text-brand-900">Leads</h1>
       <%= link_to "Manage deals →", admin_deals_path, class: "text-sm font-bold text-brand-700 hover:underline" %>
     </div>
-    <p class="mt-2 text-slate-600">View all BuyerMap, valuation, and market comps submissions.</p>
+    <p class="mt-2 text-slate-600">Seller enquiries, tool submissions, and contact requests.</p>
 
-    <div class="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+    <% group_count = ->(key) { Admin::LeadsController::SOURCE_GROUPS[key].sum { |s| @source_counts[s].to_i } } %>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <% [["All", nil, @source_counts.values.sum], ["Sellers", "sellers", group_count.call("sellers")], ["Tools", "tools", group_count.call("tools")], ["Contact", "contact", group_count.call("contact")]].each do |label, key, count| %>
+        <%= link_to admin_leads_path(filter: key),
+          class: "rounded-full px-4 py-1.5 text-sm font-semibold transition #{@filter == key ? "bg-brand-900 text-white" : "border border-slate-200 bg-white text-brand-900 hover:bg-slate-50"}" do %>
+          <%= label %> <span class="text-xs opacity-70">(<%= count %>)</span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-slate-200">
           <thead class="bg-slate-50">

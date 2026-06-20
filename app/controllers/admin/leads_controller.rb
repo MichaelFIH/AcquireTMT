@@ -1,6 +1,16 @@
 class Admin::LeadsController < Admin::BaseController
+  # Source values grouped into the filter tabs on the leads index.
+  SOURCE_GROUPS = {
+    "sellers" => %w[get_started_seller],
+    "tools"   => %w[valuation_snapshot market_comps buyer_map],
+    "contact" => %w[contact deal_inquiry buyer_network]
+  }.freeze
+
   def index
+    @filter = params[:filter].presence_in(SOURCE_GROUPS.keys)
     @leads = Lead.includes(:tool_runs).order(created_at: :desc)
+    @leads = @leads.where(source: SOURCE_GROUPS[@filter]) if @filter
+    @source_counts = Lead.group(:source).count
   end
 
   def show
